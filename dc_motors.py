@@ -6,16 +6,7 @@ from time import sleep
 GPIO.setmode(GPIO.BCM)
 
 
-class Motor():
-    """General motor class."""
-
-    def __init__(self, logger=None):
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.DEBUG)
-        self.state = 0  # 0 if motor off, 1 if motor on
-
-
-class DCMotor(Motor):
+class DCMotor():
     """Class for DC motors driven by L298N Dual H-Bridge."""
     number_of_motors = 0  # how many motors have been instantiated so far
     instances = list()
@@ -27,8 +18,9 @@ class DCMotor(Motor):
             pin_forward (int): BCM number for forward GPIO pin
             pin_forward (int): BCM number for backward GPIO pin
         """
-
-        Motor.__init__(self)
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.DEBUG)
+        self.state = 0  # 0 if motor off, 1 if motor on
         self.direction = 0  # (-1, 0, 1) = (backward, off, forward)
         self.name = name
         self.pins = {'forward': pin_forward,
