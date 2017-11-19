@@ -87,6 +87,7 @@ single motor to turn the car) or do an indefinite swing turn.
         None
 
         """
+        self.brake()  # make sure no unnecessary motors running
         if turn_time < 0:  # indefinite turning
             # run the left motor (motor_lst[0]) for turning right and
             # the right motor (motor_list[1]) for turning left
