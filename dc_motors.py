@@ -34,7 +34,7 @@ class DCMotor():
         for pin in self.pins.values():
             GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
-    def set(self, direction):
+    def set_direction(self, direction):
         """
         Sets the motor on or off and in the desired direction.
 
@@ -90,14 +90,14 @@ class DCMotor():
         Returns:
             None
         """
-        self.set(direction)
+        self.set_direction(direction)
         sleep(time)
         self.stop()
 
     def stop(self):
         """Turns the motor off.
         """
-        self.set(0)
+        self.set_direction(0)
 
     def __str__(self):
         motor_str = "motor_num: {}".format(self.num)
