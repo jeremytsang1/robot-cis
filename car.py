@@ -20,6 +20,20 @@ class Car():
         self.rm = right_motor
         self.logger.debug("right_motor:\n{}".format(self.rm.__str__()))
 
+    def brake(self):
+        """
+        Stops both left and right car motors.
+
+        Args:
+        None
+
+        Returns:
+        None
+
+        """
+        self.lm.stop()
+        self.rm.stop()
+
     def __str__(self):
         self.lm.str + '\n' + self.rm.str
 
