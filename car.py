@@ -19,6 +19,7 @@ class Car():
         self.lm = left_motor
         self.logger.debug("left_motor:\n{}".format(self.lm.__str__()))
         self.rm = right_motor
+        self.motor_lst = [self.lm, self.rm]  # for looping over motors
         self.logger.debug("right_motor:\n{}".format(self.rm.__str__()))
 
     def brake(self):
