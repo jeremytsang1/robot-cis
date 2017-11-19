@@ -2,6 +2,7 @@ import config_log
 import logging
 import dc_motors as dcm
 from dc_motors import GPIO
+from time import sleep
 
 
 class Car():
@@ -33,6 +34,35 @@ class Car():
         """
         self.lm.stop()
         self.rm.stop()
+
+    def drive(self, direction, drive_time):
+        """Sets the car driving in a straight line indefinitely or for some
+        specified time.
+
+        Args:
+        direction (int): Can take any value in (-1, 0, 1).
+          - -1: car drives backwards
+          -  0: car brakes
+          -  1: car drives forward
+
+        drive_time (float or int): determines how long the car drives
+          - values specify how long the car drives in seconds
+          - negative values cause the car to drive indefinitely
+
+        Returns:
+        None
+        """
+        if drive_time >= 0:
+            self.lm.set_direction(direction)
+            self.rm.set_direction(direction)
+            sleep(drive_time)
+            self.brake()
+        elif drive_time < 0:
+            self.lm.set_direction(direction)
+            self.rm.set_direction(direction)
+        else:
+            self.logger.error("Entered invalid value for drive_time")
+            self.brake()
 
     def __str__(self):
         self.lm.str + '\n' + self.rm.str
