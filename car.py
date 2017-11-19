@@ -63,12 +63,26 @@ class Car():
             self.logger.error("Entered invalid value for drive_time")
             self.brake()
 
-    def point_turn(self,
-                   motor_num,
-                   direction,
-                   turn_time=0,
-                   num_turns=1,
+    def point_turn(self, motor_num, direction, turn_time=0, num_turns=1,
                    wait_interval=.25):
+        """Causes the car to perform a series of point turns (operating only a
+single motor to turn the car).
+
+        Args:
+        motor_num (int): specfies which motor to operate
+          - 0: left motor
+          - 1: right motor
+        direction (int): specfies direction of turning motor
+          - -1: backwards
+          -  0: stop
+          -  1: forwards
+        turn_time (float): duration of each turn
+        num_turns (int): Non negative int. How many turns to perform
+        wait_interval (float): Delay between each turn.
+
+        Returns:
+        None
+        """
         for i in range(num_turns):
             self.motor_lst[motor_num].set_time(direction, turn_time)
             sleep(wait_interval)
