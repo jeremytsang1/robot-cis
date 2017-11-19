@@ -119,18 +119,13 @@ motors in opposite directions) or do an indefinite point turn.
 
         """
         self.brake()  # make sure no unnecessary motors running
-        # turn_motor_lst
-        # -1: [1, 0] (right, left)
-        #  1: [0, 1] (left, right)
-        turn_motor_lst = self.motor_lst[::horizontal_direction]
-
         if turn_time < 0:  # indefinite turning
-            turn_motor_lst[0].set_direction(1)
-            turn_motor_lst[1].set_direction(-1)
+            self.motor_lst[::horizontal_direction][0].set_direction(1)
+            self.motor_lst[::horizontal_direction][1].set_direction(-1)
         else:  # specified turn time
             for i in range(num_turns):
-                turn_motor_lst[0].set_direction(1)
-                turn_motor_lst[1].set_direction(-1)
+                self.motor_lst[::horizontal_direction][0].set_direction(1)
+                self.motor_lst[::horizontal_direction][1].set_direction(-1)
                 sleep(turn_time)
                 self.brake()
                 sleep(wait_interval)
