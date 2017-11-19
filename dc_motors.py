@@ -117,3 +117,4 @@ if __name__ == "__main__":
 
     left.set_time(1, .25)
     right.set_time(1, .25)
+    GPIO.cleanup()
