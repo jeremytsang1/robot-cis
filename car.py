@@ -79,8 +79,8 @@ class Car():
 
 if __name__ == "__main__":
     print()
-    right = dcm.DCMotor("left", 6, 5)    # motor 0
-    left = dcm.DCMotor("right", 16, 12)  # motor 1
-
+    right = dcm.DCMotor("left", 6, 5)    # motor 0 (left  motor)
+    left = dcm.DCMotor("right", 16, 12)  # motor 1 (right motor)
     car = Car(left, right)
+
     dcm.GPIO.cleanup()
