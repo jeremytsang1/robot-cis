@@ -63,6 +63,16 @@ class Car():
             self.logger.error("Entered invalid value for drive_time")
             self.brake()
 
+    def point_turn(self,
+                   motor_num,
+                   direction,
+                   turn_time=0,
+                   num_turns=1,
+                   wait_interval=.25):
+        for i in range(num_turns):
+            self.motor_lst[motor_num].set_time(direction, turn_time)
+            sleep(wait_interval)
+
     def __str__(self):
         self.lm.str + '\n' + self.rm.str
 
