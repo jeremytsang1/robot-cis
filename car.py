@@ -63,32 +63,38 @@ class Car():
             self.logger.error("Entered invalid value for drive_time")
             self.brake()
 
-    def point_turn(self, motor_num, direction, turn_time=0, num_turns=1,
-                   wait_interval=.25):
+    def swing_turn(self, horizontal_direction, vertical_direction,
+                   turn_time=-1, num_turns=1, wait_interval=.25):
         """Causes the car to perform a series of point turns (operating only a
-single motor to turn the car).
+single motor to turn the car) or do an indefinite point turn.
 
         Args:
-        motor_num (int): specfies which motor to operate
-          - 0: left motor
-          - 1: right motor
-        direction (int): specfies direction of turning motor
-          - -1: backwards
-          -  0: stop
-          -  1: forwards
-        turn_time (float): duration of each turn
-        num_turns (int): Non negative int. How many turns to perform
+        horizontal_direction (int): Specfies side-to-side turning.
+          - -1: Turn left.
+          -  1: Turn right.
+        vertical_direction (int): Specfies forward-reverse travel.
+          - -1: Travel backwards.
+          -  0: Stop.
+          -  1: Travel forwards.
+        turn_time (float): Duration of each turn.
+          - nonnegative values: Duration of each turn.
+          - negative values: Turn indefinitely.
+        num_turns (int): Non negative int. Specifies how many turns to perform.
         wait_interval (float): Delay between each turn.
 
         Returns:
         None
         """
-        for i in range(num_turns):
-            self.motor_lst[motor_num].set_time(direction, turn_time)
-            sleep(wait_interval)
-
-    def __str__(self):
-        self.lm.str + '\n' + self.rm.str
+        if turn_time < 0:  # indefinite turning
+            # run the left motor (motor_lst[0]) for turning right and
+            # the right motor (motor_list[1]) for turning left
+            self.motor_lst[::horizontal_direction][0].set_direction(
+                vertical_direction)
+        else:  # turning for specific time
+            for i in range(num_turns):
+                self.motor_lst[::horizontal_direction][0].set_time(
+                    vertical_direction, turn_time)
+                sleep(wait_interval)
 
 
 if __name__ == "__main__":
