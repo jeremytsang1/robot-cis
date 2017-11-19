@@ -50,6 +50,7 @@ class Car():
 
         Returns:
         None
+
         """
         if drive_time >= 0:
             self.lm.set_direction(direction)
@@ -65,8 +66,8 @@ class Car():
 
     def swing_turn(self, horizontal_direction, vertical_direction,
                    turn_time=-1, num_turns=1, wait_interval=.25):
-        """Causes the car to perform a series of point turns (operating only a
-single motor to turn the car) or do an indefinite point turn.
+        """Causes the car to perform a series of swing turns (operating only a
+single motor to turn the car) or do an indefinite swing turn.
 
         Args:
         horizontal_direction (int): Specfies side-to-side turning.
@@ -84,6 +85,7 @@ single motor to turn the car) or do an indefinite point turn.
 
         Returns:
         None
+
         """
         if turn_time < 0:  # indefinite turning
             # run the left motor (motor_lst[0]) for turning right and
