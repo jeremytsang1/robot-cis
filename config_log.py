@@ -4,6 +4,8 @@ import logging.config
 
 
 def config_logger():
+    """Configures logging per the settings in logger_config.json
+    """
     path = 'logger_config.json'
     try:
         with open(path, 'rt') as f:

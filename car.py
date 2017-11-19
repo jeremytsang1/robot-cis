@@ -22,14 +22,12 @@ class Car():
         self.logger.debug("right_motor:\n{}".format(self.rm.__str__()))
 
     def brake(self):
-        """
-        Stops both left and right car motors.
+        """Stops both left and right car motors.
 
         Args:
         None
 
-        Returns:
-        None
+        Returns: None
 
         """
         self.lm.stop()

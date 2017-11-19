@@ -35,8 +35,7 @@ class DCMotor():
             GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 
     def set_direction(self, direction):
-        """
-        Sets the motor on or off and in the desired direction.
+        """Sets the motor on or off and in the desired direction.
 
         Args:
             direction (int): Must be an in (-1, 0, 1).
@@ -76,19 +75,17 @@ class DCMotor():
             raise ValueError("Direction must be set to -1, 0, or 1")
 
     def set_time(self, direction, time=0):
-        """
-        Sets the motor on or off in the desired direction for a
+        """Sets the motor on or off in the desired direction for a
         specified amount of time.
 
-        Args:
-            direction (int): Must be an in (-1, 0, 1).
-            -1 sets the motor running backwards.
-             1 sets the motor running forwards.
-             0 turns the motor off.
-            time: Length of time the motor runs in seconds.
+        Args: direction (int): Must be an in (-1, 0, 1).  -1 sets the
+            motor running backwards.  1 sets the motor running
+            forwards.  0 turns the motor off.  time: Length of time
+            the motor runs in seconds.
 
         Returns:
             None
+
         """
         self.set_direction(direction)
         sleep(time)
