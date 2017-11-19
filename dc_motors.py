@@ -110,5 +110,10 @@ class DCMotor():
 
 
 if __name__ == "__main__":
-    left = DCMotor("left", 23, 24)
-    right = DCMotor("right", 12, 16)
+    # Testing
+    print()
+    right = DCMotor("left", 6, 5)    # motor 0
+    left = DCMotor("right", 16, 12)  # motor 1
+
+    left.set_time(1, .25)
+    right.set_time(1, .25)
