@@ -33,7 +33,7 @@ class Car():
         self.lm.stop()
         self.rm.stop()
 
-    def drive(self, direction, drive_time):
+    def drive(self, direction, drive_time=-1):
         """Sets the car driving in a straight line indefinitely or for some
         specified time.
 
