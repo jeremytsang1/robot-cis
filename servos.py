@@ -37,7 +37,8 @@ class ServoMotor():
         increments. Specified pauses are made between each increment.
 
         Args:
-        end_pl (int): Pulse length to end at (between min_pl and max_pl)
+        end_pl (int): Pulse length to end at (between self.cals['min_pl']
+        and self.cals['max_pl'])
         pause_time (float): Time in seconds to wait between each jump.
 
         Returns:
