@@ -1,3 +1,3 @@
 # Robot CARM
 
-Control for Raspberry Pi & Arduino robot arm on a car.
+Control for Raspberry Pi & robotic arm on a car.
