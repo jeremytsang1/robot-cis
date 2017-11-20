@@ -9,7 +9,7 @@ class ServoMotor():
     number_of_motors = 0  # motors created in session (including destroyed)
     instances = list()  # list of all the ServoMotor objects created
 
-    def __init__(self, name, channel, cals):
+    def __init__(self, name, cals):
         """
         Args:
         name (str): Name of servo motor.
