@@ -9,7 +9,7 @@ class ServoMotor():
     number_of_motors = 0  # motors created in session (including destroyed)
     instances = list()  # list of all the ServoMotor objects created
 
-    def __init__(self, name, cals):
+    def __init__(self, cals):
         """
         Args:
         name (str): Name of servo motor.
@@ -20,8 +20,8 @@ class ServoMotor():
         self.logger.setLevel(logging.DEBUG)
         self.pwm = Adafruit_PCA9685.PCA9685()  # Pwm module for PCA9685
         self.pwm.set_pwm_freq(60)  # Set servo period to 1/(60 s^-1)
-        self.name = name  # For convenience
         self.cals = cals  # Pulse lengths determined in physical calibration
+        self.name = cals['name']  # For convenience
         self.channel = self.cals["channel"]  # On PCA9685 board
         self.num = ServoMotor.number_of_motors  # Identifier for servo
 
