@@ -16,8 +16,10 @@ class Arm():
         self.gripper = servos.ServoMotor(cals['gripper'])
         self.left = servos.ServoMotor(cals['left'])
         self.right = servos.ServoMotor(cals['right'])
-        self.base = servos.ServoMotor(cals['base'])
-        self.servo_list = (self.gripper, self.left, self.right, self.base)
+        # Disable base until finished with rest of arm.
+        # self.base = servos.ServoMotor(cals['base'])
+        # self.servo_list = (self.gripper, self.left, self.right, self.base)
+        self.servo_list = (self.gripper, self.left, self.right)
 
     def grab(self):
         """Moves the robotic arm forwards to grab (close an open gripper) an
@@ -62,12 +64,6 @@ if __name__ == "__main__":
             "pow_pl": 300,
             "min_pl": 135,
             "max_pl": 300},
-        'base': {
-            "name": "base",
-            "channel": 15,
-            "pow_pl": 400,
-            "min_pl": None,
-            "max_pl": None},
         # Left and right servo are in opposition to each other. Until work
         # out details keep left servo at 450 at all times.
         'left': {  # use for up and down motion
@@ -82,6 +78,12 @@ if __name__ == "__main__":
             "pow_pl": 275,
             "min_pl": 275,  # provided l.current_pl = 450
             "max_pl": 550}
+        # 'base': {
+        #     "name": "base",
+        #     "channel": 15,
+        #     "pow_pl": 400,
+        #     "min_pl": None,
+        #     "max_pl": None},
     }
     arm = Arm(cals)
 
