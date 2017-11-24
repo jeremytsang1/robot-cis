@@ -37,6 +37,10 @@
 ehthumbs.db
 Thumbs.db
 
+# Directories #
+###############
+videos/testing/*
+
 # Planning #
 ############
 *.org
