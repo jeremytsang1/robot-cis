@@ -22,7 +22,7 @@ class ServoMotor():
         self.pwm.set_pwm_freq(60)  # Set servo period to 1/(60 s^-1)
         self.cals = cals  # Pulse lengths determined in physical calibration
         self.name = cals['name']  # For convenience
-        self.channel = self.cals["channel"]  # On PCA9685 board
+        self.channel = self.cals['channel']  # On PCA9685 board
         self.num = ServoMotor.number_of_motors  # Identifier for servo
 
         ServoMotor.number_of_motors += 1
