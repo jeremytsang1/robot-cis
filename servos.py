@@ -69,7 +69,7 @@ class ServoMotor():
 
 if __name__ == "__main__":
     print()
-    # example configuration
+    # Example configuration for ServoMotor Object
     gripper_servo_config = {
         'name': 'gripper',
         'channel': 12,

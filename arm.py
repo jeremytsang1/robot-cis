@@ -57,7 +57,7 @@ class Arm():
 
 if __name__ == "__main__":
     print()
-
+    # Example configuration for Arm Object
     gripper_servo_config = {
         'name': 'gripper',
         'channel': 12,

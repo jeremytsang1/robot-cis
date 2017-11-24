@@ -137,6 +137,7 @@ motors in opposite directions) or do an indefinite point turn.
 
 
 if __name__ == "__main__":
+    # Example configuration for Car Object
     print()
 
     config_left_dc_motor = {

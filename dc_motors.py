@@ -114,7 +114,7 @@ if __name__ == "__main__":
     # Testing
     print()
 
-    # Example Configuration for left and right motors
+    # Example Configuration DCMotor object
     config_left = {
         'name': 'left',
         'pin_forward': 6,
