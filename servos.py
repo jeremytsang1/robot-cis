@@ -9,26 +9,30 @@ class ServoMotor():
     number_of_motors = 0  # motors created in session (including destroyed)
     instances = list()  # list of all the ServoMotor objects created
 
-    def __init__(self, cals):
+    def __init__(self, config):
         """
         Args:
-        name (str): Name of servo motor.
-        cals (dct): dct containing calibration info for motor.
+        config (dict): configuration dictionary containing string keys
+        for the following values:
+            'name' (str): Name of servo motor
+            'channel' (int): Channel on PCA9685 board.
+            'pow_pl' (int): Pulse level to set at power on.
+            'min_pl' (int): minimum safe pulse level (determine in calibration)
+            'max_pl' (int): minimum safe pulse level (determine in calibration)
 
         """
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         self.pwm = Adafruit_PCA9685.PCA9685()  # Pwm module for PCA9685
         self.pwm.set_pwm_freq(60)  # Set servo period to 1/(60 s^-1)
-        self.cals = cals  # Pulse lengths determined in physical calibration
-        self.name = cals['name']  # For convenience
-        self.channel = self.cals['channel']  # On PCA9685 board
         self.num = ServoMotor.number_of_motors  # Identifier for servo
-
         ServoMotor.number_of_motors += 1
         ServoMotor.instances.append(self)
 
-        self.current_pl = self.cals['pow_pl']
+        self.config = config
+        self.name = config['name']
+        self.channel = self.config['channel']
+        self.current_pl = self.config['pow_pl']
         self.power_on()
 
     def sweep(self, end_pl, pause_time=0.005):
@@ -37,8 +41,8 @@ class ServoMotor():
         increments. Specified pauses are made between each increment.
 
         Args:
-        end_pl (int): Pulse length to end at (between self.cals['min_pl']
-        and self.cals['max_pl'])
+        end_pl (int): Pulse length to end at (between self.config['min_pl']
+        and self.config['max_pl'])
         pause_time (float): Time in seconds to wait between each jump.
 
         Returns:
@@ -56,12 +60,43 @@ class ServoMotor():
         ServoMotor.power_off() before shutting off servos.
 
         """
-        self.pwm.set_pwm(self.channel, 0, self.cals['pow_pl'])
+        self.pwm.set_pwm(self.channel, 0, self.config['pow_pl'])
 
     def power_off(self):
         """Sweeps servo to power on position to avoid violent startup."""
-        self.sweep(self.cals['pow_pl'])
+        self.sweep(self.config['pow_pl'])
 
 
 if __name__ == "__main__":
-    pass
+    print()
+    # example configuration
+    gripper_servo_config = {
+        'name': 'gripper',
+        'channel': 12,
+        'pow_pl': 300,
+        'min_pl': 135,
+        'max_pl': 300}
+    left_servo_config = {  # use for up and down motion
+        'name': 'left',
+        'channel': 13,
+        'pow_pl': 450,
+        'min_pl': 150,
+        'max_pl': 450}
+    right_servo_config = {  # use for forward and backward motion
+        'name': 'right',
+        'channel': 14,
+        'pow_pl': 275,
+        'min_pl': 275,  # provided l.current_pl = 450
+        'max_pl': 550}
+
+    gripper = ServoMotor(gripper_servo_config)
+    left = ServoMotor(left_servo_config)
+    right = ServoMotor(right_servo_config)
+
+    # base_servo_config = {
+    #     'name': 'base',
+    #     'channel': 15,
+    #     'pow_pl': 400,
+    #     'min_pl': None,
+    #     'max_pl': None},
+    # }
