@@ -12,10 +12,10 @@ class Car():
     def __init__(self, config):
         """
         Args:
-        config (dict): configuration dictionary containing string keys
+        config (dict): Configuration dictionary containing string keys
         for the following values:
-            'left_motor' (DCMotor): DCMotor object for left rear wheel
-            'right_motor' (DCMotor): DCMotor object for right rear wheel
+            'left_motor' (dict): Configuration dict for left DCMotor object.
+            'right_motor' (dict): Configuration dict for right DCMotor object.
 
         """
         self.logger = logging.getLogger(__name__)
