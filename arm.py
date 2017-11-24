@@ -59,31 +59,31 @@ if __name__ == "__main__":
     print()
     cals = {
         'gripper': {
-            "name": "gripper",
-            "channel": 12,
-            "pow_pl": 300,
-            "min_pl": 135,
-            "max_pl": 300},
+            'name': 'gripper',
+            'channel': 12,
+            'pow_pl': 300,
+            'min_pl': 135,
+            'max_pl': 300},
         # Left and right servo are in opposition to each other. Until work
         # out details keep left servo at 450 at all times.
         'left': {  # use for up and down motion
-            "name": "left",
-            "channel": 13,
-            "pow_pl": 450,
-            "min_pl": 150,
-            "max_pl": 450},
+            'name': 'left',
+            'channel': 13,
+            'pow_pl': 450,
+            'min_pl': 150,
+            'max_pl': 450},
         'right': {  # use for forward and backward motion
-            "name": "right",
-            "channel": 14,
-            "pow_pl": 275,
-            "min_pl": 275,  # provided l.current_pl = 450
-            "max_pl": 550}
+            'name': 'right',
+            'channel': 14,
+            'pow_pl': 275,
+            'min_pl': 275,  # provided l.current_pl = 450
+            'max_pl': 550}
         # 'base': {
-        #     "name": "base",
-        #     "channel": 15,
-        #     "pow_pl": 400,
-        #     "min_pl": None,
-        #     "max_pl": None},
+        #     'name': 'base',
+        #     'channel': 15,
+        #     'pow_pl': 400,
+        #     'min_pl': None,
+        #     'max_pl': None},
     }
     arm = Arm(cals)
 
