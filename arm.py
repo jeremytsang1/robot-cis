@@ -14,12 +14,12 @@ class Arm():
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         self.gripper = servos.ServoMotor(config['gripper'])
-        self.left = servos.ServoMotor(config['left'])
         self.right = servos.ServoMotor(config['right'])
-        # Disable base until finished with rest of arm.
+        # Disable base and left servos until finished with rest of arm.
+        # self.left = servos.ServoMotor(config['left'])
         # self.base = servos.ServoMotor(config['base'])
         # self.servo_list = (self.gripper, self.left, self.right, self.base)
-        self.servo_list = (self.gripper, self.left, self.right)
+        self.servo_list = (self.gripper, self.right)
 
     def grab(self):
         """Moves the robotic arm forwards to grab (close an open gripper) an
@@ -58,39 +58,41 @@ class Arm():
 if __name__ == "__main__":
     print()
     # Example configuration for Arm Object
-    gripper_servo_config = {
+    config_gripper_servo = {
         'name': 'gripper',
         'channel': 12,
         'pow_pl': 300,
         'min_pl': 135,
         'max_pl': 300}
-    left_servo_config = {  # use for up and down motion
-        'name': 'left',
-        'channel': 13,
-        'pow_pl': 450,
-        'min_pl': 150,
-        'max_pl': 450}
-    right_servo_config = {  # use for forward and backward motion
+    config_right_servo = {  # use for forward and backward motion
         'name': 'right',
         'channel': 14,
         'pow_pl': 300,
         'min_pl': 300,  # provided l.current_pl = 450
         'max_pl': 550}
-    # base_servo_config = {
+    # config_left_servo = {  # use for up and down motion
+    #     'name': 'left',
+    #     'channel': 13,
+    #     'pow_pl': 450,
+    #     'min_pl': 150,
+    #     'max_pl': 450
+    # }
+    # config_base_servo = {
     #     'name': 'base',
     #     'channel': 15,
     #     'pow_pl': 400,
     #     'min_pl': None,
-    #     'max_pl': None},
+    #     'max_pl': None
     # }
 
-    config = {
-        'gripper': gripper_servo_config,
-        'left': left_servo_config,
-        'right': right_servo_config
+    config_arm = {
+        'gripper': config_gripper_servo,
+        'right': config_right_servo,
+        # 'left': config_left_servo,
+        # 'base': config_base_servo,
         }
-    
-    arm = Arm(config)
+
+    arm = Arm(config_arm)
 
     # A few grabs to make sure everything is working
     for i in range(3):

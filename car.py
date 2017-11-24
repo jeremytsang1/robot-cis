@@ -151,9 +151,9 @@ if __name__ == "__main__":
         'pin_backward': 12
     }
 
-    config = {'left_motor': config_left_dc_motor,
-              'right_motor': config_right_dc_motor}
+    config_car = {'left_motor': config_left_dc_motor,
+                  'right_motor': config_right_dc_motor}
 
-    car = Car(config)
+    car = Car(config_car)
 
     dcm.GPIO.cleanup()

@@ -70,33 +70,33 @@ class ServoMotor():
 if __name__ == "__main__":
     print()
     # Example configuration for ServoMotor Object
-    gripper_servo_config = {
+    config_gripper_servo = {
         'name': 'gripper',
         'channel': 12,
         'pow_pl': 300,
         'min_pl': 135,
         'max_pl': 300}
-    left_servo_config = {  # use for up and down motion
-        'name': 'left',
-        'channel': 13,
-        'pow_pl': 450,
-        'min_pl': 150,
-        'max_pl': 450}
-    right_servo_config = {  # use for forward and backward motion
+    config_right_servo = {  # use for forward and backward motion
         'name': 'right',
         'channel': 14,
-        'pow_pl': 275,
-        'min_pl': 275,  # provided l.current_pl = 450
+        'pow_pl': 300,
+        'min_pl': 300,  # provided l.current_pl = 450
         'max_pl': 550}
-
-    gripper = ServoMotor(gripper_servo_config)
-    left = ServoMotor(left_servo_config)
-    right = ServoMotor(right_servo_config)
-
-    # base_servo_config = {
+    # config_left_servo = {  # use for up and down motion
+    #     'name': 'left',
+    #     'channel': 13,
+    #     'pow_pl': 450,
+    #     'min_pl': 150,
+    #     'max_pl': 450
+    # }
+    # config_base_servo = {
     #     'name': 'base',
     #     'channel': 15,
     #     'pow_pl': 400,
     #     'min_pl': None,
-    #     'max_pl': None},
+    #     'max_pl': None
     # }
+
+    gripper = ServoMotor(config_gripper_servo)
+    right = ServoMotor(config_right_servo)
+    # left = ServoMotor(config_left_servo)

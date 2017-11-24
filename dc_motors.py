@@ -115,19 +115,19 @@ if __name__ == "__main__":
     print()
 
     # Example Configuration DCMotor object
-    config_left = {
+    config_left_dc_motor = {
         'name': 'left',
         'pin_forward': 6,
         'pin_backward': 5
     }
-    config_right = {
+    config_right_dc_motor = {
         'name': 'right',
         'pin_forward': 16,
         'pin_backward': 12
     }
 
-    left = DCMotor(config_left)    # motor 0
-    right = DCMotor(config_right)  # motor 1
+    left = DCMotor(config_left_dc_motor)    # motor 0
+    right = DCMotor(config_right_dc_motor)  # motor 1
 
     # Test to see if connected
     left.set_time(1, .25)
