@@ -11,20 +11,24 @@ class DCMotor():
     number_of_motors = 0  # how many motors have been instantiated so far
     instances = list()
 
-    def __init__(self, name, pin_forward, pin_backward):
+#    def __init__(self, name, pin_forward, pin_backward):
+    def __init__(self, config):
         """
         Args:
-            name (str): name of motor
-            pin_forward (int): BCM number for forward GPIO pin
-            pin_forward (int): BCM number for backward GPIO pin
+        config (dict): configuration dictionary containing string keys
+        for the following values:
+            'name' (str): name of motor
+            'pin_forward' (int): BCM number for forward GPIO pin
+            'pin_forward' (int): BCM number for backward GPIO pin
+
         """
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         self.state = 0  # 0 if motor off, 1 if motor on
         self.direction = 0  # (-1, 0, 1) = (backward, off, forward)
-        self.name = name
-        self.pins = {'forward': pin_forward,
-                     'backward': pin_backward}
+        self.name = config['name']
+        self.pins = {'forward': config['pin_forward'],
+                     'backward': config['pin_backward']}
         self.num = DCMotor.number_of_motors
         DCMotor.number_of_motors += 1
         DCMotor.instances.append(self)
@@ -49,10 +53,10 @@ class DCMotor():
         """
         if direction in (-1, 0, 1):
             self.direction = direction
-            self.logger.debug("(pin, output): "
-                              "({}, {})"
-                              ", "
-                              "({}, {})".format(
+            self.logger.debug('(pin, output): '
+                              '({}, {})'
+                              ', '
+                              '({}, {})'.format(
                                   self.pins['forward'],
                                   GPIO.input(self.pins['forward']),
                                   self.pins['backward'],
@@ -70,9 +74,9 @@ class DCMotor():
                 GPIO.output(self.pins['forward'], GPIO.HIGH)
                 GPIO.output(self.pins['backward'], GPIO.LOW)
         else:
-            self.logger.debug("Attempted to set direction to: {}".format(
+            self.logger.debug('Attempted to set direction to: {}'.format(
                 direction))
-            raise ValueError("Direction must be set to -1, 0, or 1")
+            raise ValueError('Direction must be set to -1, 0, or 1')
 
     def set_time(self, direction, time=0):
         """Sets the motor on or off in the desired direction for a
@@ -97,7 +101,7 @@ class DCMotor():
         self.set_direction(0)
 
     def __str__(self):
-        motor_str = "motor_num: {}".format(self.num)
+        motor_str = 'motor_num: {}'.format(self.num)
         for direction in self.pins.keys():
             motor_str += '\n{} pin: (pin number: {}, pin output: {})'.format(
                 direction,
@@ -109,9 +113,23 @@ class DCMotor():
 if __name__ == "__main__":
     # Testing
     print()
-    right = DCMotor("left", 6, 5)    # motor 0
-    left = DCMotor("right", 16, 12)  # motor 1
 
+    # Example Configuration for left and right motors
+    config_left = {
+        'name': 'left',
+        'pin_forward': 6,
+        'pin_backward': 5
+    }
+    config_right = {
+        'name': 'right',
+        'pin_forward': 16,
+        'pin_backward': 12
+    }
+
+    left = DCMotor(config_left)    # motor 0
+    right = DCMotor(config_right)  # motor 1
+
+    # Test to see if connected
     left.set_time(1, .25)
     right.set_time(1, .25)
     GPIO.cleanup()

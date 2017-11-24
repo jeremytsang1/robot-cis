@@ -8,19 +8,23 @@ from time import sleep
 class Car():
     """Class for car base of CARM."""
 
-    def __init__(self, left_motor, right_motor):
+#    def __init__(self, left_motor, right_motor):
+    def __init__(self, config):
         """
         Args:
-            left_motor (DCMotor): DCMotor object for left rear wheel
-            right_motor (DCMotor): DCMotor object for right rear wheel
+        config (dict): configuration dictionary containing string keys
+        for the following values:
+            'left_motor' (DCMotor): DCMotor object for left rear wheel
+            'right_motor' (DCMotor): DCMotor object for right rear wheel
+
         """
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
-        self.lm = left_motor
-        self.logger.debug("left_motor:\n{}".format(self.lm.__str__()))
-        self.rm = right_motor
+        self.lm = config['left_motor']
+        self.logger.debug('left_motor:\n{}'.format(self.lm.__str__()))
+        self.rm = config['right_motor']
         self.motor_lst = [self.lm, self.rm]  # for looping over motors
-        self.logger.debug("right_motor:\n{}".format(self.rm.__str__()))
+        self.logger.debug('right_motor:\n{}'.format(self.rm.__str__()))
 
     def brake(self):
         """Stops both left and right car motors.
@@ -61,7 +65,7 @@ class Car():
             self.lm.set_direction(direction)
             self.rm.set_direction(direction)
         else:
-            self.logger.error("Entered invalid value for drive_time")
+            self.logger.error('Entered invalid value for drive_time')
             self.brake()
 
     def swing_turn(self, horizontal_direction, vertical_direction,
@@ -134,8 +138,21 @@ motors in opposite directions) or do an indefinite point turn.
 
 if __name__ == "__main__":
     print()
-    right = dcm.DCMotor("left", 6, 5)    # motor 0 (left  motor)
-    left = dcm.DCMotor("right", 16, 12)  # motor 1 (right motor)
-    car = Car(left, right)
+
+    config_left_dc_motor = {
+        'name': 'left',
+        'pin_forward': 6,
+        'pin_backward': 5
+    }
+    config_right_dc_motor = {
+        'name': 'right',
+        'pin_forward': 16,
+        'pin_backward': 12
+    }
+
+    config = {'left_motor': dcm.DCMotor(config_left_dc_motor),
+              'right_motor': dcm.DCMotor(config_right_dc_motor)}
+
+    car = Car(config)
 
     dcm.GPIO.cleanup()
