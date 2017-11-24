@@ -20,9 +20,9 @@ class Car():
         """
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
-        self.lm = config['left_motor']
+        self.lm = dcm.DCMotor(config['left_motor'])
         self.logger.debug('left_motor:\n{}'.format(self.lm.__str__()))
-        self.rm = config['right_motor']
+        self.rm = dcm.DCMotor(config['right_motor'])
         self.motor_lst = [self.lm, self.rm]  # for looping over motors
         self.logger.debug('right_motor:\n{}'.format(self.rm.__str__()))
 
@@ -150,8 +150,8 @@ if __name__ == "__main__":
         'pin_backward': 12
     }
 
-    config = {'left_motor': dcm.DCMotor(config_left_dc_motor),
-              'right_motor': dcm.DCMotor(config_right_dc_motor)}
+    config = {'left_motor': config_left_dc_motor,
+              'right_motor': config_right_dc_motor}
 
     car = Car(config)
 
