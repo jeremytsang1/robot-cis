@@ -35,11 +35,16 @@ def manual_mode(robot):
         '    e: swing right FWD',
         '    q: swing left BACK',
         '    e: swing right BACK',
+        'space: brake',
         '    g: grab',
         '    o: opens',
-        '    n: extend',
-        '    p: retract',
-        'space: brake',
+        '    n: full extend',
+        '    p: full retract',
+        '    [: increment extend',
+        '    ]: increment retract',        
+        '    1: look down',
+        '    2: look straight',
+        '    3: look up',
         '    j: quit',
         '\n> '))
 
@@ -71,9 +76,22 @@ def manual_mode(robot):
             robot.arm.right.sweep(550)
         elif option == 'p':
             robot.arm.right.sweep(300)
+        elif option == '[':
+            if robot.arm.right.current_pl < 500:
+                robot.arm.right.sweep(robot.arm.right.current_pl - 5)
+        elif option == ']':
+            if robot.arm.right.current_pl < 500:
+                robot.arm.right.sweep(robot.arm.right.current_pl + 5)
+        elif option == '1':
+            robot.cam.lookdown()
+        elif option == '2':
+            robot.cam.power_off()
+        elif option == '3':
+            robot.cam.lookup()
         elif option == 'j':
             robot.car.brake()
             robot.arm.poweroff()
+            robot.cam.power_off()
             print("Goodbye!")
         else:
             print('Please choose a menu option\n')
