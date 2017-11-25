@@ -2,7 +2,7 @@ import config_log
 import logging
 import arm
 import car
-
+import vision
 
 class Carm():
     def __init__(self, config):
@@ -18,6 +18,7 @@ class Carm():
         self.logger.setLevel(logging.DEBUG)
         self.car = car.Car(config['car'])
         self.arm = arm.Arm(config['arm'])
+        self.cam = vision.Cam(config['cam'])
         # self.eye = vision.Eye(config['eye'])
 
 
@@ -74,6 +75,13 @@ if __name__ == "__main__":
         'left': left_servo_config,
         'base': base_servo_config,
         }
+
+config_camera_servo = {
+    'name': 'right',
+    'channel': 15,
+    'pow_pl': 400,
+    'min_pl': 325,
+    'max_pl': 475}
 
     config = {
         'car': car_config,
