@@ -100,3 +100,16 @@ if __name__ == "__main__":
     gripper = ServoMotor(config_gripper_servo)
     right = ServoMotor(config_right_servo)
     # left = ServoMotor(config_left_servo)
+
+    camera_servo = {
+        'name': 'camera',
+        'channel': 15,
+        'pow_pl': 400,
+        'min_pl': 135,
+        'max_pl': 300}    
+
+    camera.sweep(325)
+    time.sleep(2)
+    camera.sweep(475)
+    time.sleep(2)
+    camera.sweep(400)
