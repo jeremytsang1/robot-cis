@@ -1,12 +1,13 @@
 config_left_dc_motor = {
     'name': 'left',
-    'pin_forward': 6,
-    'pin_backward': 5
+    'pin_forward': 16,
+    'pin_backward': 12
 }
 config_right_dc_motor = {
     'name': 'right',
-    'pin_forward': 16,
-    'pin_backward': 12
+    'pin_forward': 6,
+    'pin_backward': 5
+
 }
 
 config_car = {
@@ -49,9 +50,17 @@ config_arm = {
     # 'base': config_base_servo,
     }
 
+config_camera_servo = {
+    'name': 'right',
+    'channel': 15,
+    'pow_pl': 400,
+    'min_pl': 325,
+    'max_pl': 475}
+
 carm_config = {
     'car': config_car,
-    'arm': config_arm
+    'arm': config_arm,
+    'cam': config_camera_servo
     }
 
 
