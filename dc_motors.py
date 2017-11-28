@@ -19,7 +19,7 @@ class DCMotor():
         for the following values:
             'name' (str): name of motor
             'pin_forward' (int): BCM number for forward GPIO pin
-            'pin_forward' (int): BCM number for backward GPIO pin
+            'pin_backward' (int): BCM number for backward GPIO pin
 
         """
         self.logger = logging.getLogger(__name__)
