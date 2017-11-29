@@ -21,7 +21,7 @@ def manual_mode(robot):
 
     Returns:
     None
-    
+
 
     """
     option = str()
@@ -69,19 +69,19 @@ def manual_mode(robot):
         elif option == ' ':
             robot.car.brake()
         elif option == 'g':
-            robot.arm.gripper.sweep(135)
+            robot.arm.close_gripper()
         elif option == 'o':
-            robot.arm.gripper.sweep(300)
+            robot.arm.open_gripper()
         elif option == 'n':
-            robot.arm.right.sweep(550)
+            robot.arm.right.sweep(robot.arm.right.config['max_pl'])
         elif option == 'p':
-            robot.arm.right.sweep(300)
+            robot.arm.right.sweep(robot.arm.right.config['min_pl'])
         elif option == '[':
-            if robot.arm.right.current_pl < 500:
-                robot.arm.right.sweep(robot.arm.right.current_pl - 5)
+            if robot.arm.right.current_pl > robot.arm.right.config['min_pl']:
+                robot.arm.extend(-5)
         elif option == ']':
-            if robot.arm.right.current_pl < 500:
-                robot.arm.right.sweep(robot.arm.right.current_pl + 5)
+            if robot.arm.right.current_pl < robot.arm.right.config['max_pl']:
+                robot.arm.extend(5)
         elif option == '1':
             robot.cam.lookdown()
         elif option == '2':

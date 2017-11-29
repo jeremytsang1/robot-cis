@@ -54,6 +54,17 @@ class Arm():
         for servo in self.servo_list:
             servo.power_off()
 
+    def open_gripper(self):
+        self.gripper.sweep(self.gripper.config['max_pl'])
+
+    def close_gripper(self):
+        self.gripper.sweep(self.gripper.config['min_pl'])
+
+    def extend(self, dist_pl):
+        if (self.right.config['min_pl'] <= (self.right.current_pl + dist_pl) <=
+            self.right.config['max_pl']):
+            self.right.sweep(self.right.current_pl + dist_pl)
+
 
 if __name__ == "__main__":
     print()
