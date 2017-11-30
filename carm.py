@@ -3,6 +3,8 @@ import logging
 import arm
 import car
 import vision
+import ir
+import RPi.GPIO as GPIO
 
 class Carm():
     def __init__(self, config):
@@ -19,7 +21,8 @@ class Carm():
         self.car = car.Car(config['car'])
         self.arm = arm.Arm(config['arm'])
         self.cam = vision.Cam(config['cam'])
-        # self.eye = vision.Eye(config['eye'])
+        self.irl = ir.IRSensor(config['irl'])
+        self.irr = ir.IRSensor(config['irr'])
 
 
 if __name__ == "__main__":
@@ -35,7 +38,7 @@ if __name__ == "__main__":
         'pin_backward': 12
     }
 
-    car_config = {
+    config_car = {
         'left_motor': config_left_dc_motor,
         'right_motor': config_right_dc_motor
     }
@@ -69,7 +72,7 @@ if __name__ == "__main__":
         'max_pl': None
     }
 
-    arm_config = {
+    config_arm = {
         'gripper': gripper_servo_config,
         'right': right_servo_config,
         'left': left_servo_config,
@@ -82,10 +85,18 @@ if __name__ == "__main__":
         'pow_pl': 400,
         'min_pl': 325,
         'max_pl': 475}
+    
+    config_ir_left = {'name': 'left',
+                      'pin': 14}
+    config_ir_right = {'name': 'right',
+                       'pin': 15}
 
     config = {
-        'car': car_config,
-        'arm': arm_config
+        'car': config_car,
+        'arm': config_arm,
+        'cam': config_camera_servo,
+        'irl': config_ir_left,
+        'irr': config_ir_right,
         }
 
     carm = Carm(config)
