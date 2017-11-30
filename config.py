@@ -57,10 +57,17 @@ config_camera_servo = {
     'min_pl': 325,
     'max_pl': 475}
 
+config_ir_left = {'name': 'left',
+                  'pin': 14}
+config_ir_right = {'name': 'right',
+                   'pin': 15}
+
 carm_config = {
     'car': config_car,
     'arm': config_arm,
-    'cam': config_camera_servo
+    'cam': config_camera_servo,
+    'irl': config_ir_left,
+    'irr': config_ir_right,
     }
 
 
