@@ -22,12 +22,12 @@ class IRSensor():
         self.pin = config['pin']
         self.name = config['name']
         self.setup(self.pin)  # 1: no interrupt, 0: interrupt
-        self.signal = self.check_signal()
+        self.signal = self.check()
 
     def setup(self, pin):
         GPIO.setup(pin, GPIO.IN)
 
-    def check_signal(self):
+    def check(self):
         """Gives a value based on if there is an object blocking or reflecting
         back to the sensor. Gives 1 if there is no
         obstruction/interruption and 0 if there is.
@@ -70,13 +70,13 @@ class IRSensor():
         if timeout > 0:
             t0, t1 = time.time(), time.time()
             while t1 - t0 < timeout:
-                self.check_signal()
+                self.check()
                 t1 = time.time()
                 time.sleep(interval)
         else:  # check indefinitely
             try:
                 while True:
-                    self.check_signal()
+                    self.check()
                     time.sleep(interval)
             except KeyboardInterrupt:
                 self.logger.debug("{} sensor stopped by user".format(
