@@ -4,6 +4,7 @@ import arm
 import car
 import vision
 import ir
+import ultrasonic
 import RPi.GPIO as GPIO
 
 class Carm():
@@ -23,6 +24,7 @@ class Carm():
         self.cam = vision.Cam(config['cam'])
         self.irl = ir.IRSensor(config['irl'])
         self.irr = ir.IRSensor(config['irr'])
+        self.uls = ultrasonic.UltrasonicSensor(config['uls'])
 
 
 if __name__ == "__main__":
@@ -91,12 +93,16 @@ if __name__ == "__main__":
     config_ir_right = {'name': 'right',
                        'pin': 15}
 
+    config_ultrasonic = {'trig': 23,
+                         'echo': 24}
+
     config = {
         'car': config_car,
         'arm': config_arm,
         'cam': config_camera_servo,
         'irl': config_ir_left,
         'irr': config_ir_right,
+        'uls': config_ultrasonic,
         }
 
     carm = Carm(config)

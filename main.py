@@ -47,6 +47,7 @@ def manual_mode(robot):
         '1': ('look down', robot.cam.lookdown),  # 0 args
         '2': ('look straight', robot.cam.power_off),  # 0 args
         '3': ('look up', robot.cam.lookup),  # 0 args
+        'u': ('check ultrasonic', robot.uls.get_distance, 'sensor'),
         'line': ('enter line following mode', line_following_mode, robot),
         'j': ('quit',),
     }
@@ -69,6 +70,7 @@ def manual_mode(robot):
         '1',
         '2',
         '3',
+        'u',
         'line',
         'j']
 
@@ -82,7 +84,9 @@ def manual_mode(robot):
         option_key = input(menu_str)
         if option_key in option_dct.keys():
             tup = option_dct[option_key]
-            if len(tup) == 2:
+            if tup[-1] == 'sensor':
+                print(tup[1]())
+            elif len(tup) == 2:
                 tup[1]()
             elif len(tup) == 3:
                 tup[1](tup[2])

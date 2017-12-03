@@ -62,12 +62,16 @@ config_ir_left = {'name': 'left',
 config_ir_right = {'name': 'right',
                    'pin': 15}
 
+config_ultrasonic = {'trig': 23,
+                     'echo': 24}
+
 carm_config = {
     'car': config_car,
     'arm': config_arm,
     'cam': config_camera_servo,
     'irl': config_ir_left,
     'irr': config_ir_right,
+    'uls': config_ultrasonic,
     }
 
 
