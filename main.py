@@ -47,7 +47,7 @@ def manual_mode(robot):
         '1': ('look down', robot.cam.lookdown),  # 0 args
         '2': ('look straight', robot.cam.power_off),  # 0 args
         '3': ('look up', robot.cam.lookup),  # 0 args
-        'u': ('check ultrasonic', robot.uls.get_distance, 'sensor'),
+        'u': ('check ultrasonic', robot.uls.get_distance, 'uls', 'sensor'),
         'line': ('enter line following mode', line_following_mode, robot),
         'j': ('quit',),
     }
@@ -77,29 +77,40 @@ def manual_mode(robot):
     # aligning all colons in the menu
     width = max([len(key) for key in option_dct.keys()])
     menu_str = '\n'.join([ok.rjust(width) + ": " +
-                          option_dct[ok][0] for ok in option_key_order]) + '\n> '
+                          option_dct[ok][0] for ok in option_key_order])
+    sensor_readings = {
+        'irl': list(),
+        'irr': list(),
+        'uls': list()
+    }
+    option_history = list()
+    try:
+        print(menu_str)
+        while option_key != 'j':
+            option_key = input('> ')
+            if option_key in option_dct.keys():
+                tup = option_dct[option_key]
+                if tup[-1] == 'sensor':
+                    print(tup[1]())
+                    # sensor_readings['uls'].append()
+                    continue
+                elif len(tup) == 2:
+                    tup[1]()
+                elif len(tup) == 3:
+                    tup[1](tup[2])
+                elif len(tup) == 4:
+                    tup[1](tup[2], tup[3])
+            else:
+                print('Please choose a menu option\n')
+            print(menu_str)
 
-    while option_key != 'j':
-        print()
-        option_key = input(menu_str)
-        if option_key in option_dct.keys():
-            tup = option_dct[option_key]
-            if tup[-1] == 'sensor':
-                print(tup[1]())
-            elif len(tup) == 2:
-                tup[1]()
-            elif len(tup) == 3:
-                tup[1](tup[2])
-            elif len(tup) == 4:
-                tup[1](tup[2], tup[3])
-        else:
-            print('Please choose a menu option\n')
-
-    # Shutdown
-    robot.car.brake()
-    robot.arm.poweroff()
-    robot.cam.power_off()
-    print("Goodbye!")
+        # Shutdown
+        robot.power_off()
+        print("Goodbye!")
+    except:
+        robot.power_off()
+        time.sleep(10)
+        cleanup()
 
 
 def line_following_mode(robot):
