@@ -47,10 +47,6 @@ class IRSensor():
             interrupt = "no "
         else:
             print("Check sensor")
-        self.logger.debug("{} sensor: {}interrupt, signal: {}".format(
-            self.name,
-            interrupt,
-            self.signal))
         return self.signal
 
     def run_sensor(self, timeout=0, interval=1):
