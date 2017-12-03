@@ -26,8 +26,7 @@ def manual_mode(robot):
     None
 
     """
-    option_key = str()
-
+    
     option_dct = {
         'w': ('forwards', robot.car.drive, 1),
         's': ('backwards', robot.car.drive, -1),
@@ -78,12 +77,22 @@ def manual_mode(robot):
     width = max([len(key) for key in option_dct.keys()])
     menu_str = '\n'.join([ok.rjust(width) + ": " +
                           option_dct[ok][0] for ok in option_key_order])
+
+    enter_menu(option_dct, option_key_order)
+
+
+def enter_menu(option_dct, option_key_order):
+
     sensor_readings = {
         'irl': list(),
         'irr': list(),
         'uls': list()
     }
+    menu_str = generate_menu_str(option_dct, option_key_order)
     option_history = list()
+    option_num = int()
+    option_key = str()
+
     try:
         print(menu_str)
         while option_key != 'j':
@@ -111,6 +120,14 @@ def manual_mode(robot):
         robot.power_off()
         time.sleep(10)
         cleanup()
+
+
+def generate_menu_str(option_dct, option_key_order):
+    # aligning all colons in the menu
+    width = max([len(key) for key in option_dct.keys()])
+    menu_str = '\n'.join([ok.rjust(width) + ": " +
+                          option_dct[ok][0] for ok in option_key_order])
+    return menu_str
 
 
 def line_following_mode(robot):
