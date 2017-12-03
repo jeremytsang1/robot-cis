@@ -1,4 +1,5 @@
 import servos
+from config import config_camera_servo
 
 
 class Cam(servos.ServoMotor):
@@ -13,12 +14,6 @@ class Cam(servos.ServoMotor):
 
 
 if __name__ == "__main__":
-    config_camera_servo = {
-        'name': 'right',
-        'channel': 15,
-        'pow_pl': 400,
-        'min_pl': 325,
-        'max_pl': 475}
 
     cam = Cam(config_camera_servo)
 

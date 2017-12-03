@@ -53,9 +53,9 @@ config_arm = {
 config_camera_servo = {
     'name': 'right',
     'channel': 15,
-    'pow_pl': 400,
-    'min_pl': 325,
-    'max_pl': 475}
+    'pow_pl': 415,
+    'min_pl': 340,
+    'max_pl': 490}
 
 config_ir_left = {'name': 'left',
                   'pin': 14}
