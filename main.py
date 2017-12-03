@@ -148,12 +148,11 @@ def line_following_mode(robot):
 
 
 if __name__ == "__main__":
+    robot = carm.Carm(config.carm_config)
     robot.car.rm.logger.setLevel(logging.INFO)
     robot.car.lm.logger.setLevel(logging.INFO)
     robot.irr.logger.setLevel(logging.INFO)
     robot.irl.logger.setLevel(logging.INFO)
-
-    robot = carm.Carm(config.carm_config)
 
     try:
         manual_mode(robot)
