@@ -144,7 +144,8 @@ def line_following_mode(robot):
                                                robot.irr.check())
         robot.car.brake()
     except:
-        robot.car.brake()
+        robot.power_off()
+        cleanup()
 
 
 if __name__ == "__main__":
@@ -154,10 +155,7 @@ if __name__ == "__main__":
     robot.irr.logger.setLevel(logging.INFO)
     robot.irl.logger.setLevel(logging.INFO)
 
-    try:
-        manual_mode(robot)
-    except:
-        cleanup()
+    manual_mode(robot)
 
 # direction_dct = {
 #     'w': robot.car.drive(1),

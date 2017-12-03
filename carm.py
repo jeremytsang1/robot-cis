@@ -26,6 +26,13 @@ class Carm():
         self.irr = ir.IRSensor(config['irr'])
         self.uls = ultrasonic.UltrasonicSensor(config['uls'])
 
+    def power_off(self):
+        """Brings the robot to a safe halt. Turns off DC motors and returns
+        servo motors to starting positions to prevent violent startup. """
+        self.car.brake()
+        self.arm.power_off()
+        self.cam.power_off()
+
 
 if __name__ == "__main__":
     # Example configuration for Carm Object

@@ -48,7 +48,7 @@ class Arm():
         except KeyboardInterrupt:
             self.right.sweep(dropoff)
 
-    def poweroff(self):
+    def power_off(self):
         """Quick power way to run power_off for each of the 4 servos.
         """
         for servo in self.servo_list:
@@ -109,4 +109,4 @@ if __name__ == "__main__":
     for i in range(3):
         arm.grab()
 
-    arm.poweroff()
+    arm.power_off()
