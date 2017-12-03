@@ -31,10 +31,10 @@ def manual_mode(robot):
     option_dct = {
         'w': ('forwards', robot.car.drive, 1),
         's': ('backwards', robot.car.drive, -1),
-        'a': ('point left', robot.car.point_turn, -1),
-        'd': ('point right', robot.car.point_turn, 1),
-        'e': ('swing right FWD', robot.car.swing_turn, 1, 1),  # 2 args
-        'q': ('swing left FWD', robot.car.swing_turn, -1, 1),  # 2 args
+        'a': ('swing left FWD', robot.car.swing_turn, -1, 1),  # 2 args
+        'd': ('swing right FWD', robot.car.swing_turn, 1, 1),  # 2 args
+        'q': ('point left', robot.car.point_turn, -1),
+        'e': ('point right', robot.car.point_turn, 1),
         'z': ('swing left BACK', robot.car.swing_turn, -1, -1),  # 2 args
         'c': ('swing right BACK', robot.car.swing_turn, 1, -1),  # 2 args
         ' ': ('brake', robot.car.brake),  # 0 args
