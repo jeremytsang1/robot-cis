@@ -3,6 +3,7 @@ import carm
 import config
 import RPi.GPIO as GPIO
 import time
+import pprint
 
 
 def stop():
@@ -26,7 +27,7 @@ def manual_mode(robot):
     None
 
     """
-    
+
     option_dct = {
         'w': ('forwards', robot.car.drive, 1),
         's': ('backwards', robot.car.drive, -1),
@@ -73,11 +74,6 @@ def manual_mode(robot):
         'line',
         'j']
 
-    # aligning all colons in the menu
-    width = max([len(key) for key in option_dct.keys()])
-    menu_str = '\n'.join([ok.rjust(width) + ": " +
-                          option_dct[ok][0] for ok in option_key_order])
-
     enter_menu(option_dct, option_key_order)
 
 
@@ -89,16 +85,30 @@ def enter_menu(option_dct, option_key_order):
         'uls': list()
     }
     menu_str = generate_menu_str(option_dct, option_key_order)
-    option_history = list()
-    option_num = int()
-    option_key = str()
+    user_option = str()
+    option_history = [{user_option: float()}]  # key = command, value = how long to run command
+    user_option_count = int()
+    start_time = time.time()
+    end_time = float()
 
     try:
         print(menu_str)
-        while option_key != 'j':
-            option_key = input('> ')
-            if option_key in option_dct.keys():
-                tup = option_dct[option_key]
+        while user_option != 'j':
+            previous_user_option = user_option
+            user_option = input('> ')
+            end_time = time.time()
+            user_option_count += 1
+            option_history[user_option_count -
+                           1][previous_user_option] = round(end_time - start_time, 3)
+            option_history.append({user_option: float()})
+
+            # make sure the number of commmands entered is the same as
+            # the number of commands stored
+            assert len(option_history) == user_option_count + 1
+            start_time = time.time()
+            print('hello')
+            if user_option in option_dct.keys():
+                tup = option_dct[user_option]
                 if tup[-1] == 'sensor':
                     print(tup[1]())
                     # sensor_readings['uls'].append()
@@ -114,6 +124,7 @@ def enter_menu(option_dct, option_key_order):
             print(menu_str)
 
         # Shutdown
+        pprint.pprint(option_history)  # find how to save a log of this later
         robot.power_off()
         print("Goodbye!")
     except:
@@ -128,6 +139,10 @@ def generate_menu_str(option_dct, option_key_order):
     menu_str = '\n'.join([ok.rjust(width) + ": " +
                           option_dct[ok][0] for ok in option_key_order])
     return menu_str
+
+
+def exectute_commands(robot, command_dict):
+    pass
 
 
 def line_following_mode(robot):
