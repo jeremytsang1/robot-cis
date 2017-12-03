@@ -155,17 +155,17 @@ def line_following_mode(robot):
 
 
 if __name__ == "__main__":
-    robot = carm.Carm(config.carm_config)
-
     robot.car.rm.logger.setLevel(logging.INFO)
     robot.car.lm.logger.setLevel(logging.INFO)
     robot.irr.logger.setLevel(logging.INFO)
     robot.irl.logger.setLevel(logging.INFO)
 
-#    line_following_mode(robot)
-    manual_mode(robot)
+    robot = carm.Carm(config.carm_config)
 
-    cleanup()
+    try:
+        manual_mode(robot)
+    except:
+        cleanup()
 
 # direction_dct = {
 #     'w': robot.car.drive(1),
