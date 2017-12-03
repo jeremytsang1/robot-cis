@@ -1,0 +1,2 @@
+# packages upon fresh install of OpenCV
+numpy==1.13.3
