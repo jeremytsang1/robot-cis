@@ -5,7 +5,8 @@ import RPi.GPIO as GPIO
 import time
 
 
-def stop():  # emergency stop
+def stop():
+    """Emergency stop for convenience"""
     robot.car.brake()
 
 
@@ -23,7 +24,6 @@ def manual_mode(robot):
 
     Returns:
     None
-
 
     """
     option_key = str()
@@ -103,6 +103,17 @@ def manual_mode(robot):
 
 
 def line_following_mode(robot):
+    """Makes the robot enter line following mode. Drives in in a straight
+    line till reaches the end of the masking tape (i.e. both sensors
+    interrupted).
+
+    Args:
+    robot (Carm): instance of Carm class
+
+    Returns:
+    None
+
+    """
     def interrupt_neither(left, right):
         return left and right
 
@@ -125,28 +136,10 @@ def line_following_mode(robot):
                     'driving_forward': False}
 
         movement['brake'] = False
-        turning_left = False
-        turning_right = False
+
         while not movement['brake']:
-            if interrupt_right(robot.irl.check(),
-                               robot.irr.check()) and not turning_left:
-                turning_left = True
-                robot.car.point_turn(-1)
-                time.sleep(2)
-            elif interrupt_right(robot.irl.check(),
-                                 robot.irr.check()) and turning_left:
-                turning_left = False
-                robot.car.swing_turn(1, 1)
-            elif interrupt_left(robot.irl.check(),
-                                robot.irr.check()) and not turning_right:
-                turning_right = True
-                robot.car.point_turn(1)
-                time.sleep(2)
-            elif interrupt_left(robot.irl.check(),
-                                robot.irr.check()) and turning_right:
-                turning_right = False
-                robot.car.swing_turn(-1, 1)
             time.sleep(.1)  # delay to check sensors
+
             movement['brake'] = interrupt_both(robot.irl.check(),
                                                robot.irr.check())
         robot.car.brake()
