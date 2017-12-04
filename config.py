@@ -18,7 +18,7 @@ config_car = {
 config_gripper_servo = {
     'name': 'gripper',
     'channel': 12,
-    'pow_pl': 300,
+    'pow_pl': 135,
     'min_pl': 135,
     'max_pl': 300}
 config_right_servo = {  # use for forward and backward motion

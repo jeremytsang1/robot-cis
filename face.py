@@ -21,7 +21,7 @@ rectangle."""
     return dims[0] + dims[2], dims[1] + dims[3]
 
 
-def find_face(robot):
+def find_face():
     count_up = 0
     timeout = 5  # allow 5 seconds of not finding faces before rescanning
     x_res = config_pi_camera['x_res']
@@ -108,4 +108,4 @@ def scan():
     pass
 
     
-# find_face()
+find_face()
