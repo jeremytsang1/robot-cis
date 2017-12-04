@@ -58,8 +58,10 @@ def enter_menu(robot):
             user_cmd = input('> ')
 
             if user_cmd in robot.cmd_dct.keys():
-                end_time = time.time()
                 user_cmd_count += 1
+
+                # record end time of PREVIOUS command
+                end_time = time.time()
 
                 # add the previous command's execution time to the history
                 cmd_history[user_cmd_count -
@@ -72,6 +74,7 @@ def enter_menu(robot):
                 # the number of commands stored
                 assert len(cmd_history) == user_cmd_count + 1
 
+                # record start time of CURRENT command
                 start_time = time.time()
 
                 execute_single_cmd(robot, user_cmd)
@@ -177,3 +180,4 @@ if __name__ == "__main__":
     robot.car.lm.logger.setLevel(logging.INFO)
 
     manual_mode(robot)
+    cleanup()
