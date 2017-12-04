@@ -28,13 +28,13 @@ def manual_mode(robot):
 
     """
 
-    command_dct, command_key_order = generate_command_info(robot)
+    cmd_dct, cmd_key_order = generate_cmd_info(robot)
 
-    enter_menu(command_dct, command_key_order)
+    enter_menu(cmd_dct, cmd_key_order)
 
 
-def generate_command_info(robot):
-    command_dct = {
+def generate_cmd_info(robot):
+    cmd_dct = {
         # dictionary containing the keybindings and associated
         # commands for the user. The tuple will contain the:
         #  - name of the command
@@ -65,7 +65,7 @@ def generate_command_info(robot):
         'j': ('quit',),
     }
 
-    command_key_order = [
+    cmd_key_order = [
         'w',
         'a',
         's',
@@ -88,62 +88,62 @@ def generate_command_info(robot):
         'line',
         'j']
 
-    return command_dct, command_key_order
+    return cmd_dct, cmd_key_order
 
 
-def enter_menu(command_dct, command_key_order):
+def enter_menu(cmd_dct, cmd_key_order):
 
     sensor_readings = {
         'irl': list(),
         'irr': list(),
         'uls': list()
     }
-    menu_str = generate_menu_str(command_dct, command_key_order)
-    user_command = str()
+    menu_str = generate_menu_str(cmd_dct, cmd_key_order)
+    user_cmd = str()
     
     # make a class for command history later
-    # command_history will list of dicts with each dict having:
+    # cmd_history will list of dicts with each dict having:
     #  -     key (str): keybinding for command (e.g. 'w', '[]', 'line', etc)
-    #  - value (float): time indicating how long to execute command
-    command_history = [{user_command: float()}]  # key = command, value = how long to run command
+    #  - value (float): time indicating how long to execute cmd
+    cmd_history = [{user_cmd: float()}]  # key = command, value = how long to run command
     
-    user_command_count = int()
+    user_cmd_count = int()
     start_time = time.time()
     end_time = float()
 
     try:
         print(menu_str)
-        previous_user_command = ''
-        while user_command != 'j':
-            user_command = input('> ')
+        previous_user_cmd = ''
+        while user_cmd != 'j':
+            user_cmd = input('> ')
 
-            if user_command in command_dct.keys():
+            if user_cmd in cmd_dct.keys():
                 end_time = time.time()
-                user_command_count += 1
+                user_cmd_count += 1
 
                 # add the previous command's execution time to the history
-                command_history[user_command_count -
-                                1][previous_user_command] = round(end_time - start_time, 3)
+                cmd_history[user_cmd_count -
+                                1][previous_user_cmd] = round(end_time - start_time, 3)
 
                 # make a new command dict for the next commmand
-                command_history.append({user_command: float()})
+                cmd_history.append({user_cmd: float()})
 
                 # make sure the number of commmands entered is the same as
                 # the number of commands stored
-                assert len(command_history) == user_command_count + 1
+                assert len(cmd_history) == user_cmd_count + 1
 
                 start_time = time.time()
 
-                execute_single_command(robot, user_command, command_dct)
+                execute_single_cmd(robot, user_cmd, cmd_dct)
 
-                previous_user_command = user_command
+                previous_user_cmd = user_cmd
             else:
                 print('Please choose VALID a menu command\n')
             print(menu_str)
 
         # Shutdown
         print("\n\nYour commands this session were: ")
-        pprint.pprint(command_history)  # find how to save a log of this later
+        pprint.pprint(cmd_history)  # find how to save a log of this later
         print('\n')
         robot.power_off()
         print("Goodbye!")
@@ -153,20 +153,20 @@ def enter_menu(command_dct, command_key_order):
         cleanup()
 
 
-def generate_menu_str(command_dct, command_key_order):
+def generate_menu_str(cmd_dct, cmd_key_order):
     # aligning all colons in the menu
-    width = max([len(key) for key in command_dct.keys()])
+    width = max([len(key) for key in cmd_dct.keys()])
     menu_str = '\n'.join([ok.rjust(width) + ": " +
-                          command_dct[ok][0] for ok in command_key_order])
+                          cmd_dct[ok][0] for ok in cmd_key_order])
     return menu_str
 
 
-def execute_single_command(robot, user_command, command_dct):
-    """Executes a single command (user_command). Assumes user_command is
-    a key in command_dct.
+def execute_single_cmd(robot, user_cmd, cmd_dct):
+    """Executes a single command (user_cmd). Assumes user_cmd is
+    a key in cmd_dct.
     """
     # get information for the next command
-    tup = command_dct[user_command]
+    tup = cmd_dct[user_cmd]
 
     if tup[-1] == 'sensor':
         robot.car.brake()
@@ -180,7 +180,7 @@ def execute_single_command(robot, user_command, command_dct):
         tup[1](tup[2], tup[3])
 
 
-def exectute_commands(robot, command_dict):
+def exectute_cmds(robot, cmd_dict):
     pass
 
 
