@@ -5,7 +5,7 @@ import RPi.GPIO as GPIO
 import time
 import pprint
 from line_mode import line_following_mode
-import face
+# import face
 
 def stop():
     """Emergency stop for convenience"""
@@ -77,7 +77,8 @@ def enter_menu(robot):
 
             else:
                 print('Please choose VALID a menu command\n')
-            print(menu_str)
+            if user_cmd not in ('u', 'irl', 'irr'):
+                print(menu_str)
 
         # Shutdown
         cmd_history = cmd_history[1:]  # Omits the '' cmd

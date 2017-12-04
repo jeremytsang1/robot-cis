@@ -49,9 +49,14 @@ class Carm():
             ('2', ('look straight', self.cam.power_off)),  # 0 args
             ('3', ('look up', self.cam.lookup)),  # 0 args
             ('u', ('check ultrasonic', self.uls.get_distance, 'uls', 'sensor')),
-            ('j', ('quit',)),
+            ('irl', ('check left IR', self.irl.check, 'irl', 'sensor')),
+            ('irr', ('check right IR', self.irr.check, 'irr', 'sensor')),
+            ('j', ('Stop recording',)),
         ]
         self.cmd_dct = self.update_cmd_dct()
+        self.history_list = list()
+
+
 
     def update_cmd_dct(self):
         return {cmd[0]: cmd[1] for cmd in self.cmd_list}
@@ -60,7 +65,6 @@ class Carm():
         for cmd in cmds_to_add:
             self.cmd_list.insert(-1, cmd)
         self.update_cmd_dct()
-
 
     def power_off(self):
         """Brings the robot to a safe halt. Turns off DC motors and returns
@@ -119,7 +123,7 @@ class Carm():
         """
         if type(cmds) == str:
             try:
-                cmds = read_cmds_from_txt(cmds)
+                cmds = self.read_cmds_from_txt(cmds)
             except FileNotFoundError:
                 print("File not found")
 
@@ -153,12 +157,12 @@ class Carm():
                 if line[0] != ' ':
                     line = line.strip('\n').split()
                     cmds.append({'str': line[0],
-                                 'time': int(line[1])})
+                                 'time': float(line[1])})
                     print(line)
                 else:
                     line = line.strip('\n').split()
                     cmds.append({'str': ' ',
-                                 'time': int(line[0])})
+                                 'time': float(line[0])})
                     print(line)
         return (cmds)
 
