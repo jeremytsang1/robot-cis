@@ -104,9 +104,9 @@ def enter_menu(option_dct, option_key_order):
 
             # make sure the number of commmands entered is the same as
             # the number of commands stored
+            
             assert len(option_history) == user_option_count + 1
             start_time = time.time()
-            print('hello')
             if user_option in option_dct.keys():
                 tup = option_dct[user_option]
                 if tup[-1] == 'sensor':
@@ -124,7 +124,9 @@ def enter_menu(option_dct, option_key_order):
             print(menu_str)
 
         # Shutdown
+        print("\n\nYour commands this session were: ")
         pprint.pprint(option_history)  # find how to save a log of this later
+        print('\n')
         robot.power_off()
         print("Goodbye!")
     except:
@@ -193,10 +195,9 @@ def line_following_mode(robot):
 
 if __name__ == "__main__":
     robot = carm.Carm(config.carm_config)
+
     robot.car.rm.logger.setLevel(logging.INFO)
     robot.car.lm.logger.setLevel(logging.INFO)
-    robot.irr.logger.setLevel(logging.INFO)
-    robot.irl.logger.setLevel(logging.INFO)
 
     manual_mode(robot)
 
@@ -210,3 +211,4 @@ if __name__ == "__main__":
 #     'z': robot.car.swing_turn(-1, -1),
 #     'c': robot.car.swing_turn(1, -1),
 #     ' ': robot.car.brake()}
+
