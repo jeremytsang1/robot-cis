@@ -29,6 +29,13 @@ def manual_mode(robot):
     """
 
     command_dct = {
+        # dictionary containing the keybindings and associated
+        # commands for the user. The tuple will contain the:
+        #  - name of the command
+        #  - method to call
+        #  - arguments to pass to the method
+        #  - (optionally) if command references a sensor the name of the sensor
+        #  - (optionally) a marker in the last element to denote it is a sensor
         'w': ('forwards', robot.car.drive, 1),
         's': ('backwards', robot.car.drive, -1),
         'a': ('swing left FWD', robot.car.swing_turn, -1, 1),  # 2 args
@@ -51,6 +58,7 @@ def manual_mode(robot):
         'line': ('enter line following mode', line_following_mode, robot),
         'j': ('quit',),
     }
+
     command_key_order = [
         'w',
         'a',
@@ -122,11 +130,11 @@ def enter_menu(command_dct, command_key_order):
                     print(tup[1]())
                     # sensor_readings['uls'].append()
                     continue
-                elif len(tup) == 2:
+                elif len(tup) == 2:  # method has 0 arguments
                     tup[1]()
-                elif len(tup) == 3:
+                elif len(tup) == 3:  # method has 1 argument
                     tup[1](tup[2])
-                elif len(tup) == 4:
+                elif len(tup) == 4:  # method has 2 arguments
                     tup[1](tup[2], tup[3])
                 previous_user_command = user_command
             else:
