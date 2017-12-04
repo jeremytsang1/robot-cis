@@ -73,5 +73,3 @@ config_carm = {
     'irr': config_ir_right,
     'uls': config_ultrasonic,
     }
-
-

@@ -62,14 +62,16 @@ if __name__ == "__main__":
     # Example configuration for Carm Object
     config_left_dc_motor = {
         'name': 'left',
-        'pin_forward': 6,
-        'pin_backward': 5
-    }
-    config_right_dc_motor = {
-        'name': 'right',
         'pin_forward': 16,
         'pin_backward': 12
     }
+
+    config_right_dc_motor = {
+        'name': 'right',
+        'pin_forward': 6,
+        'pin_backward': 5
+    }
+
 
     config_car = {
         'left_motor': config_left_dc_motor,
