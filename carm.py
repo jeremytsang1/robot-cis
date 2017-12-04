@@ -25,6 +25,30 @@ class Carm():
         self.irl = ir.IRSensor(config['irl'])
         self.irr = ir.IRSensor(config['irr'])
         self.uls = ultrasonic.UltrasonicSensor(config['uls'])
+        self.cmd_list = [
+            ('w', ('forwards', self.car.drive, 1)),
+            ('s', ('backwards', self.car.drive, -1)),
+            ('a', ('swing left FWD', self.car.swing_turn, -1, 1)),  # 2 args
+            ('d', ('swing right FWD', self.car.swing_turn, 1, 1)),  # 2 args
+            ('q', ('point left', self.car.point_turn, -1)),
+            ('e', ('point right', self.car.point_turn, 1)),
+            ('z', ('swing left BACK', self.car.swing_turn, -1, -1)),  # 2 args
+            ('c', ('swing right BACK', self.car.swing_turn, 1, -1)),  # 2 args
+            (' ', ('brake', self.car.brake)),  # 0 args
+            ('[', ('increment extend', self.arm.extend, -5)),
+            (']', ('increment retract', self.arm.extend, 5)),
+            ('g', ('grab', self.arm.close_gripper)),  # 0 args
+            ('o', ('opens', self.arm.open_gripper)),  # 0 args
+            ('n', ('full extend', self.arm.right.sweep, self.arm.right.config['max_pl'])),
+            ('p', ('full retract', self.arm.right.sweep, self.arm.right.config['min_pl'])),
+            ('1', ('look down', self.cam.lookdown)),  # 0 args
+            ('2', ('look straight', self.cam.power_off)),  # 0 args
+            ('3', ('look up', self.cam.lookup)),  # 0 args
+            ('u', ('check ultrasonic', self.uls.get_distance, 'uls', 'sensor')),
+            # ('line', ('enter line following mode', line_following_mode, self)),
+            ('j', ('quit',)),
+        ]
+        self.cmd_dct = {cmd[0]: cmd[1] for cmd in self.cmd_list}
 
     def power_off(self):
         """Brings the robot to a safe halt. Turns off DC motors and returns

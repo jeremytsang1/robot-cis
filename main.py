@@ -28,77 +28,17 @@ def manual_mode(robot):
 
     """
 
-    cmd_dct, cmd_key_order = generate_cmd_info(robot)
-
-    enter_menu(cmd_dct, cmd_key_order)
+    enter_menu(robot)
 
 
-def generate_cmd_info(robot):
-    cmd_dct = {
-        # dictionary containing the keybindings and associated
-        # commands for the user. The tuple will contain the:
-        #  - name of the command
-        #  - method to call
-        #  - arguments to pass to the method
-        #  - (optionally) if command references a sensor the name of the sensor
-        #  - (optionally) a marker in the last element to denote it is a sensor
-        'w': ('forwards', robot.car.drive, 1),
-        's': ('backwards', robot.car.drive, -1),
-        'a': ('swing left FWD', robot.car.swing_turn, -1, 1),  # 2 args
-        'd': ('swing right FWD', robot.car.swing_turn, 1, 1),  # 2 args
-        'q': ('point left', robot.car.point_turn, -1),
-        'e': ('point right', robot.car.point_turn, 1),
-        'z': ('swing left BACK', robot.car.swing_turn, -1, -1),  # 2 args
-        'c': ('swing right BACK', robot.car.swing_turn, 1, -1),  # 2 args
-        ' ': ('brake', robot.car.brake),  # 0 args
-        '[': ('increment extend', robot.arm.extend, -5),
-        ']': ('increment retract', robot.arm.extend, 5),
-        'g': ('grab', robot.arm.close_gripper),  # 0 args
-        'o': ('opens', robot.arm.open_gripper),  # 0 args
-        'n': ('full extend', robot.arm.right.sweep, robot.arm.right.config['max_pl']),
-        'p': ('full retract', robot.arm.right.sweep, robot.arm.right.config['min_pl']),
-        '1': ('look down', robot.cam.lookdown),  # 0 args
-        '2': ('look straight', robot.cam.power_off),  # 0 args
-        '3': ('look up', robot.cam.lookup),  # 0 args
-        'u': ('check ultrasonic', robot.uls.get_distance, 'uls', 'sensor'),
-        'line': ('enter line following mode', line_following_mode, robot),
-        'j': ('quit',),
-    }
-
-    cmd_key_order = [
-        'w',
-        'a',
-        's',
-        'd',
-        'e',
-        'q',
-        'z',
-        'c',
-        ' ',
-        '[',
-        ']',
-        'g',
-        'o',
-        'n',
-        'p',
-        '1',
-        '2',
-        '3',
-        'u',
-        'line',
-        'j']
-
-    return cmd_dct, cmd_key_order
-
-
-def enter_menu(cmd_dct, cmd_key_order):
+def enter_menu(robot):
 
     sensor_readings = {
         'irl': list(),
         'irr': list(),
         'uls': list()
     }
-    menu_str = generate_menu_str(cmd_dct, cmd_key_order)
+    menu_str = generate_menu_str(robot)
     user_cmd = str()
     
     # make a class for command history later
@@ -117,7 +57,7 @@ def enter_menu(cmd_dct, cmd_key_order):
         while user_cmd != 'j':
             user_cmd = input('> ')
 
-            if user_cmd in cmd_dct.keys():
+            if user_cmd in robot.cmd_dct.keys():
                 end_time = time.time()
                 user_cmd_count += 1
 
@@ -134,7 +74,7 @@ def enter_menu(cmd_dct, cmd_key_order):
 
                 start_time = time.time()
 
-                execute_single_cmd(robot, user_cmd, cmd_dct)
+                execute_single_cmd(robot, user_cmd)
 
                 previous_user_cmd = user_cmd
             else:
@@ -153,20 +93,20 @@ def enter_menu(cmd_dct, cmd_key_order):
         cleanup()
 
 
-def generate_menu_str(cmd_dct, cmd_key_order):
+def generate_menu_str(robot):
     # aligning all colons in the menu
-    width = max([len(key) for key in cmd_dct.keys()])
+    width = max([len(key) for key in robot.cmd_dct.keys()])
     menu_str = '\n'.join([ok.rjust(width) + ": " +
-                          cmd_dct[ok][0] for ok in cmd_key_order])
+                          robot.cmd_dct[ok][0] for ok in [cmd[0] for cmd in robot.cmd_list]])
     return menu_str
 
 
-def execute_single_cmd(robot, user_cmd, cmd_dct):
+def execute_single_cmd(robot, user_cmd):
     """Executes a single command (user_cmd). Assumes user_cmd is
-    a key in cmd_dct.
+    a key in robot.cmd_dct.
     """
     # get information for the next command
-    tup = cmd_dct[user_cmd]
+    tup = robot.cmd_dct[user_cmd]
 
     if tup[-1] == 'sensor':
         robot.car.brake()
@@ -237,14 +177,3 @@ if __name__ == "__main__":
     robot.car.lm.logger.setLevel(logging.INFO)
 
     manual_mode(robot)
-
-# direction_dct = {
-#     'w': robot.car.drive(1),
-#     's': robot.car.drive(-1),
-#     'a': robot.car.point_turn(-1),
-#     'd': robot.car.point_turn(1),
-#     'q': robot.car.swing_turn(-1, 1),
-#     'e': robot.car.swing_turn(1, 1),
-#     'z': robot.car.swing_turn(-1, -1),
-#     'c': robot.car.swing_turn(1, -1),
-#     ' ': robot.car.brake()}
