@@ -93,23 +93,32 @@ def enter_menu(command_dct, command_key_order):
 
     try:
         print(menu_str)
+        previous_user_command = ''
         while user_command != 'j':
-            previous_user_command = user_command
             user_command = input('> ')
-            end_time = time.time()
-            user_command_count += 1
-            command_history[user_command_count -
-                           1][previous_user_command] = round(end_time - start_time, 3)
-            command_history.append({user_command: float()})
 
-            # make sure the number of commmands entered is the same as
-            # the number of commands stored
-            
-            assert len(command_history) == user_command_count + 1
-            start_time = time.time()
             if user_command in command_dct.keys():
+                end_time = time.time()
+                user_command_count += 1
+
+                # add the previous command's execution time to the history
+                command_history[user_command_count -
+                                1][previous_user_command] = round(end_time - start_time, 3)
+
+                # make a new command dict for the next commmand
+                command_history.append({user_command: float()})
+
+                # make sure the number of commmands entered is the same as
+                # the number of commands stored
+                assert len(command_history) == user_command_count + 1
+                
+                start_time = time.time()
+
+                # get information for the next command
                 tup = command_dct[user_command]
+                
                 if tup[-1] == 'sensor':
+                    robot.car.brake()
                     print(tup[1]())
                     # sensor_readings['uls'].append()
                     continue
@@ -119,6 +128,7 @@ def enter_menu(command_dct, command_key_order):
                     tup[1](tup[2])
                 elif len(tup) == 4:
                     tup[1](tup[2], tup[3])
+                previous_user_command = user_command
             else:
                 print('Please choose a menu command\n')
             print(menu_str)
