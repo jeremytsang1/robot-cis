@@ -40,6 +40,8 @@ Thumbs.db
 # Directories #
 ###############
 videos/testing/*
+cmds/
+
 
 # Planning #
 ############
