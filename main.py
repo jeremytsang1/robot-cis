@@ -108,18 +108,21 @@ def execute_single_cmd(robot, user_cmd):
     a key in robot.cmd_dct.
     """
     # get information for the next command
-    tup = robot.cmd_dct[user_cmd]
+    try:
+        tup = robot.cmd_dct[user_cmd]
 
-    if tup[-1] == 'sensor':
-        robot.car.brake()
-        print(tup[1]())
-        # sensor_readings['uls'].append()
-    elif len(tup) == 2:  # method has 0 arguments
-        tup[1]()
-    elif len(tup) == 3:  # method has 1 argument
-        tup[1](tup[2])
-    elif len(tup) == 4:  # method has 2 arguments
-        tup[1](tup[2], tup[3])
+        if tup[-1] == 'sensor':
+            robot.car.brake()
+            print(tup[1]())
+            # sensor_readings['uls'].append()
+        elif len(tup) == 2:  # method has 0 arguments
+            tup[1]()
+        elif len(tup) == 3:  # method has 1 argument
+            tup[1](tup[2])
+        elif len(tup) == 4:  # method has 2 arguments
+            tup[1](tup[2], tup[3])
+    except KeyboardInterrupt:
+        stop()
 
 
 def execute_cmds(robot, cmds):
@@ -293,3 +296,54 @@ if __name__ == "__main__":
         {'str': '1', 'time': 1},
         {'str': '2', 'time': 1},
     ]
+
+    right_90 = [{'str': 'd', 'time': 0.523},
+                {'str': 's', 'time': 0.641},
+                {'str': 'd', 'time': 0.912},
+                {'str': 's', 'time': 0.736},
+                {'str': 'd', 'time': 1.129},
+                {'str': 's', 'time': 0.734},
+                {'str': 'd', 'time': 1.288},
+                {'str': 'd', 'time': 0.444},
+                {'str': 's', 'time': 0.763},
+                {'str': 'd', 'time': 1.108},
+                {'str': 's', 'time': 0.664},
+                {'str': 'd', 'time': 1.076},
+                {'str': 's', 'time': 0.777},
+                {'str': 'd', 'time': 1.163},
+                {'str': 's', 'time': 0.758},
+                {'str': 'd', 'time': 1.107},
+                {'str': 's', 'time': 0.668},
+                {'str': 'd', 'time': 1.303},
+                {'str': 's', 'time': 0.648},
+                {'str': 'd', 'time': 1.46},
+                {'str': 's', 'time': 0.689},
+                {'str': 'd', 'time': 1.43},
+                {'str': 's', 'time': 0.805},
+                {'str': 'd', 'time': 2.049},
+                {'str': 's', 'time': 1.041},
+                {'str': ' ', 'time': 14.953}]
+
+    left_90 = [{'str': 'a', 'time': 1.046},
+               {'str': 's', 'time': 0.896},
+               {'str': 'a', 'time': 1.022},
+               {'str': 'a', 'time': 0.853},
+               {'str': 's', 'time': 1.035},
+               {'str': 'a', 'time': 1.28},
+               {'str': 's', 'time': 1.088},
+               {'str': 'a', 'time': 1.367},
+               {'str': 's', 'time': 1.055},
+               {'str': 'a', 'time': 1.327},
+               {'str': 's', 'time': 0.918},
+               {'str': 'a', 'time': 1.152},
+               {'str': 's', 'time': 1.286},
+               {'str': 'a', 'time': 1.196},
+               {'str': 's', 'time': 1.067},
+               {'str': 'a', 'time': 1.185},
+               {'str': 's', 'time': 1.534},
+               {'str': 'a', 'time': 2.046},
+               {'str': 's', 'time': 0.773},
+               {'str': 'd', 'time': 0.515},
+               {'str': ' ', 'time': 9.85},
+               {'str': 'j', 'time': 0.0}]
+
