@@ -4,9 +4,8 @@ import config
 import RPi.GPIO as GPIO
 import time
 import pprint
-import datetime
-import os
-
+from line_mode import line_following_mode
+import face
 
 def stop():
     """Emergency stop for convenience"""
@@ -52,7 +51,6 @@ def enter_menu(robot):
     try:
         print(menu_str)
         while user_cmd != 'j':
-            print(cmd_history)
             user_cmd = input('> ')
 
             if user_cmd in robot.cmd_dct.keys():
@@ -75,7 +73,7 @@ def enter_menu(robot):
                 # record start time of CURRENT command
                 start_time = time.time()
 
-                execute_single_cmd(robot, user_cmd)
+                robot.execute_single_cmd(user_cmd)
 
             else:
                 print('Please choose VALID a menu command\n')
@@ -84,7 +82,7 @@ def enter_menu(robot):
         # Shutdown
         cmd_history = cmd_history[1:]  # Omits the '' cmd
         print("\n\nYour commands this session were: ")
-        write_cmds_to_txt(cmd_history)
+        robot.write_cmds_to_txt(cmd_history)
         pprint.pprint(cmd_history)
         print('\n')
         robot.power_off()
@@ -101,180 +99,6 @@ def generate_menu_str(robot):
     menu_str = '\n'.join([ok.rjust(width) + ": " +
                           robot.cmd_dct[ok][0] for ok in [cmd[0] for cmd in robot.cmd_list]])
     return menu_str
-
-
-def execute_single_cmd(robot, user_cmd):
-    """Executes a single command (user_cmd). Assumes user_cmd is
-    a key in robot.cmd_dct.
-    """
-    # get information for the next command
-    try:
-        tup = robot.cmd_dct[user_cmd]
-
-        if tup[-1] == 'sensor':
-            robot.car.brake()
-            print(tup[1]())
-            # sensor_readings['uls'].append()
-        elif len(tup) == 2:  # method has 0 arguments
-            tup[1]()
-        elif len(tup) == 3:  # method has 1 argument
-            tup[1](tup[2])
-        elif len(tup) == 4:  # method has 2 arguments
-            tup[1](tup[2], tup[3])
-    except KeyboardInterrupt:
-        stop()
-
-
-def execute_cmds(robot, cmds):
-    """Reads a series of commands from a specially formatted list or text
-    file and executes them in order. If using a list, format in the
-    following fashion
-
-    cmd_list = [{'str': <command n>, 'time': <time to execute command n>}]
-
-    If using a text file have the first column indicate the commands
-    and the second command indincate the time to execute the commands
-
-    w 1.5
-    a 7
-    s 2
-    d 4
-
-    The function ends the series of commands with a brake() to prevent
-    robot from rolling away.
-
-    Args:
-    robot (Carm): Carm instance
-    cmds (list or str): list containing command data or filename of text file
-    containing command data
-
-    Returns:
-    None
-
-    """
-    def ex(cmd_str, robot=robot):
-        execute_single_cmd(robot, cmd_str)
-
-    if type(cmds) == str:
-        try:
-            cmds = read_cmds_from_txt(cmds)
-        except FileNotFoundError:
-            print("File not found")
-
-    for cmd in cmds:
-        ex(cmd['str'])
-        time.sleep(cmd['time'])
-    ex(' ')
-
-
-def read_cmds_from_txt(filename):
-    """Takes in a text file and returns a command list for execution by a
-    Carm object. Text must be formatted with the first column as the
-    command string and the second column as the duration of execution
-    for said command. Example formatting (do not include # signs or
-    anything to the right of them):
-
-    w 2.5  # drives forward for 2.5 seconds
-    a 3    # swing turns right for 3 seconds
-      1    # brakes for 1 second
-    1 2    # looksdown for 2 seconds
-
-    Args:
-    filename (str): input file containing command strings and times
-
-    Returns:
-    list: list of dicts formatted for execution
-
-    """
-    cmds = list()
-    with open(filename) as f:
-        for line in f:
-            if line[0] != ' ':
-                line = line.strip('\n').split()
-                cmds.append({'str': line[0],
-                             'time': int(line[1])})
-                print(line)
-            else:
-                line = line.strip('\n').split()
-                cmds.append({'str': ' ',
-                             'time': int(line[0])})
-                print(line)
-    return (cmds)
-
-
-def write_cmds_to_txt(cmds, filename='cmds.txt'):
-    """Takes in a list of command dicts and writes the values to a text
-    file in the ./cmds subdirectory. Cmds must be a list in the form:
-
-    [{'str': '<command str n>', 'time':<time to execute command n>}
-
-    Args:
-    cmds (list): list of dicts
-    filename (str): filename of output text file
-
-    Returns:
-    None
-
-    """
-    # TODO make sure the ./cmds dir exists
-    sub_dir = './cmds/'
-    if os.path.isfile(sub_dir + filename):
-        time_stamp = datetime.datetime.now().isoformat()[
-            :19].replace(":", '').replace('T', '-')
-        filename = filename.split('.')
-        filename[0] += '-' + time_stamp
-        filename = '.'.join(filename)
-
-    with open(sub_dir + filename, 'w') as f:
-        for cmd in cmds:
-            line = '{} {}\n'.format(cmd['str'], cmd['time'])
-            f.write(line)
-
-
-def line_following_mode(robot):
-    """Makes the robot enter line following mode. Drives in in a straight
-    line till reaches the end of the masking tape (i.e. both sensors
-    interrupted).
-
-    Args:
-    robot (Carm): instance of Carm class
-
-    Returns:
-    None
-
-    """
-    def interrupt_neither(left, right):
-        return left and right
-
-    def interrupt_both(left, right):
-        return (not left) and (not right)
-
-    def interrupt_left(left, right):
-        return left and not right
-
-    def interrupt_right(left, right):
-        return right and not left
-
-    try:
-        robot.car.drive(1)
-        position = {'left_of_line': False,
-                    'right_of_line': False}
-        movement = {'brake': False,
-                    'turning_left': False,
-                    'turning_right': False,
-                    'driving_forward': False}
-
-        movement['brake'] = False
-
-        while not movement['brake']:
-            time.sleep(.1)  # delay to check sensors
-
-            movement['brake'] = interrupt_both(robot.irl.check(),
-                                               robot.irr.check())
-        robot.car.brake()
-    except:
-        robot.power_off()
-        cleanup()
 
 
 if __name__ == "__main__":
