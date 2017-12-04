@@ -138,7 +138,7 @@ def enter_menu(command_dct, command_key_order):
                     tup[1](tup[2], tup[3])
                 previous_user_command = user_command
             else:
-                print('Please choose a menu command\n')
+                print('Please choose VALID a menu command\n')
             print(menu_str)
 
         # Shutdown
