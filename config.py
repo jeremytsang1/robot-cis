@@ -65,6 +65,10 @@ config_ir_right = {'name': 'right',
 config_ultrasonic = {'trig': 23,
                      'echo': 24}
 
+config_pi_camera = {'x_res': 320,
+                    'y_res': 240,
+                    'framerate': 32}
+
 config_carm = {
     'car': config_car,
     'arm': config_arm,
@@ -73,3 +77,4 @@ config_carm = {
     'irr': config_ir_right,
     'uls': config_ultrasonic,
     }
+
