@@ -100,7 +100,13 @@ def enter_menu(command_dct, command_key_order):
     }
     menu_str = generate_menu_str(command_dct, command_key_order)
     user_command = str()
+    
+    # make a class for command history later
+    # command_history will list of dicts with each dict having:
+    #  -     key (str): keybinding for command (e.g. 'w', '[]', 'line', etc)
+    #  - value (float): time indicating how long to execute command
     command_history = [{user_command: float()}]  # key = command, value = how long to run command
+    
     user_command_count = int()
     start_time = time.time()
     end_time = float()
@@ -235,4 +241,3 @@ if __name__ == "__main__":
 #     'z': robot.car.swing_turn(-1, -1),
 #     'c': robot.car.swing_turn(1, -1),
 #     ' ': robot.car.brake()}
-
