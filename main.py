@@ -28,6 +28,12 @@ def manual_mode(robot):
 
     """
 
+    command_dct, command_key_order = generate_command_info(robot)
+
+    enter_menu(command_dct, command_key_order)
+
+
+def generate_command_info(robot):
     command_dct = {
         # dictionary containing the keybindings and associated
         # commands for the user. The tuple will contain the:
@@ -82,7 +88,7 @@ def manual_mode(robot):
         'line',
         'j']
 
-    enter_menu(command_dct, command_key_order)
+    return command_dct, command_key_order
 
 
 def enter_menu(command_dct, command_key_order):
@@ -119,12 +125,12 @@ def enter_menu(command_dct, command_key_order):
                 # make sure the number of commmands entered is the same as
                 # the number of commands stored
                 assert len(command_history) == user_command_count + 1
-                
+
                 start_time = time.time()
 
                 # get information for the next command
                 tup = command_dct[user_command]
-                
+
                 if tup[-1] == 'sensor':
                     robot.car.brake()
                     print(tup[1]())
