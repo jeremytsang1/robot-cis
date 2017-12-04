@@ -231,7 +231,7 @@ def line_following_mode(robot):
 
 
 if __name__ == "__main__":
-    robot = carm.Carm(config.carm_config)
+    robot = carm.Carm(config.config_carm)
 
     robot.car.rm.logger.setLevel(logging.INFO)
     robot.car.lm.logger.setLevel(logging.INFO)

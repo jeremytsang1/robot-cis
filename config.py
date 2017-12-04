@@ -65,7 +65,7 @@ config_ir_right = {'name': 'right',
 config_ultrasonic = {'trig': 23,
                      'echo': 24}
 
-carm_config = {
+config_carm = {
     'car': config_car,
     'arm': config_arm,
     'cam': config_camera_servo,
