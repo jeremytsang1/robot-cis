@@ -134,20 +134,8 @@ def enter_menu(command_dct, command_key_order):
 
                 start_time = time.time()
 
-                # get information for the next command
-                tup = command_dct[user_command]
+                execute_single_command(robot, user_command, command_dct)
 
-                if tup[-1] == 'sensor':
-                    robot.car.brake()
-                    print(tup[1]())
-                    # sensor_readings['uls'].append()
-                    continue
-                elif len(tup) == 2:  # method has 0 arguments
-                    tup[1]()
-                elif len(tup) == 3:  # method has 1 argument
-                    tup[1](tup[2])
-                elif len(tup) == 4:  # method has 2 arguments
-                    tup[1](tup[2], tup[3])
                 previous_user_command = user_command
             else:
                 print('Please choose VALID a menu command\n')
@@ -171,6 +159,25 @@ def generate_menu_str(command_dct, command_key_order):
     menu_str = '\n'.join([ok.rjust(width) + ": " +
                           command_dct[ok][0] for ok in command_key_order])
     return menu_str
+
+
+def execute_single_command(robot, user_command, command_dct):
+    """Executes a single command (user_command). Assumes user_command is
+    a key in command_dct.
+    """
+    # get information for the next command
+    tup = command_dct[user_command]
+
+    if tup[-1] == 'sensor':
+        robot.car.brake()
+        print(tup[1]())
+        # sensor_readings['uls'].append()
+    elif len(tup) == 2:  # method has 0 arguments
+        tup[1]()
+    elif len(tup) == 3:  # method has 1 argument
+        tup[1](tup[2])
+    elif len(tup) == 4:  # method has 2 arguments
+        tup[1](tup[2], tup[3])
 
 
 def exectute_commands(robot, command_dict):
