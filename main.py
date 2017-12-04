@@ -28,7 +28,7 @@ def manual_mode(robot):
 
     """
 
-    option_dct = {
+    command_dct = {
         'w': ('forwards', robot.car.drive, 1),
         's': ('backwards', robot.car.drive, -1),
         'a': ('swing left FWD', robot.car.swing_turn, -1, 1),  # 2 args
@@ -51,7 +51,7 @@ def manual_mode(robot):
         'line': ('enter line following mode', line_following_mode, robot),
         'j': ('quit',),
     }
-    option_key_order = [
+    command_key_order = [
         'w',
         'a',
         's',
@@ -74,41 +74,41 @@ def manual_mode(robot):
         'line',
         'j']
 
-    enter_menu(option_dct, option_key_order)
+    enter_menu(command_dct, command_key_order)
 
 
-def enter_menu(option_dct, option_key_order):
+def enter_menu(command_dct, command_key_order):
 
     sensor_readings = {
         'irl': list(),
         'irr': list(),
         'uls': list()
     }
-    menu_str = generate_menu_str(option_dct, option_key_order)
-    user_option = str()
-    option_history = [{user_option: float()}]  # key = command, value = how long to run command
-    user_option_count = int()
+    menu_str = generate_menu_str(command_dct, command_key_order)
+    user_command = str()
+    command_history = [{user_command: float()}]  # key = command, value = how long to run command
+    user_command_count = int()
     start_time = time.time()
     end_time = float()
 
     try:
         print(menu_str)
-        while user_option != 'j':
-            previous_user_option = user_option
-            user_option = input('> ')
+        while user_command != 'j':
+            previous_user_command = user_command
+            user_command = input('> ')
             end_time = time.time()
-            user_option_count += 1
-            option_history[user_option_count -
-                           1][previous_user_option] = round(end_time - start_time, 3)
-            option_history.append({user_option: float()})
+            user_command_count += 1
+            command_history[user_command_count -
+                           1][previous_user_command] = round(end_time - start_time, 3)
+            command_history.append({user_command: float()})
 
             # make sure the number of commmands entered is the same as
             # the number of commands stored
             
-            assert len(option_history) == user_option_count + 1
+            assert len(command_history) == user_command_count + 1
             start_time = time.time()
-            if user_option in option_dct.keys():
-                tup = option_dct[user_option]
+            if user_command in command_dct.keys():
+                tup = command_dct[user_command]
                 if tup[-1] == 'sensor':
                     print(tup[1]())
                     # sensor_readings['uls'].append()
@@ -120,12 +120,12 @@ def enter_menu(option_dct, option_key_order):
                 elif len(tup) == 4:
                     tup[1](tup[2], tup[3])
             else:
-                print('Please choose a menu option\n')
+                print('Please choose a menu command\n')
             print(menu_str)
 
         # Shutdown
         print("\n\nYour commands this session were: ")
-        pprint.pprint(option_history)  # find how to save a log of this later
+        pprint.pprint(command_history)  # find how to save a log of this later
         print('\n')
         robot.power_off()
         print("Goodbye!")
@@ -135,11 +135,11 @@ def enter_menu(option_dct, option_key_order):
         cleanup()
 
 
-def generate_menu_str(option_dct, option_key_order):
+def generate_menu_str(command_dct, command_key_order):
     # aligning all colons in the menu
-    width = max([len(key) for key in option_dct.keys()])
+    width = max([len(key) for key in command_dct.keys()])
     menu_str = '\n'.join([ok.rjust(width) + ": " +
-                          option_dct[ok][0] for ok in option_key_order])
+                          command_dct[ok][0] for ok in command_key_order])
     return menu_str
 
 
