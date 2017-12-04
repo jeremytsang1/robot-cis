@@ -4,6 +4,8 @@ import config
 import RPi.GPIO as GPIO
 import time
 import pprint
+import datetime
+import os
 
 
 def stop():
@@ -33,19 +35,15 @@ def manual_mode(robot):
 
 def enter_menu(robot):
 
-    sensor_readings = {
-        'irl': list(),
-        'irr': list(),
-        'uls': list()
-    }
     menu_str = generate_menu_str(robot)
     user_cmd = str()
     
     # make a class for command history later
     # cmd_history will list of dicts with each dict having:
     #  -     key (str): keybinding for command (e.g. 'w', '[]', 'line', etc)
-    #  - value (float): time indicating how long to execute cmd
-    cmd_history = [{user_cmd: float()}]  # key = command, value = how long to run command
+    #  - value (float): time indicating how long to execute command
+    cmd_history = [{'str': user_cmd,
+                    'time': float()}]
     
     user_cmd_count = int()
     start_time = time.time()
@@ -53,8 +51,8 @@ def enter_menu(robot):
 
     try:
         print(menu_str)
-        previous_user_cmd = ''
         while user_cmd != 'j':
+            print(cmd_history)
             user_cmd = input('> ')
 
             if user_cmd in robot.cmd_dct.keys():
@@ -65,10 +63,10 @@ def enter_menu(robot):
 
                 # add the previous command's execution time to the history
                 cmd_history[user_cmd_count -
-                                1][previous_user_cmd] = round(end_time - start_time, 3)
+                            1]['time'] = round(end_time - start_time, 3)
 
                 # make a new command dict for the next commmand
-                cmd_history.append({user_cmd: float()})
+                cmd_history.append({'str': user_cmd, 'time': float()})
 
                 # make sure the number of commmands entered is the same as
                 # the number of commands stored
@@ -79,14 +77,15 @@ def enter_menu(robot):
 
                 execute_single_cmd(robot, user_cmd)
 
-                previous_user_cmd = user_cmd
             else:
                 print('Please choose VALID a menu command\n')
             print(menu_str)
 
         # Shutdown
+        cmd_history = cmd_history[1:]  # Omits the '' cmd
         print("\n\nYour commands this session were: ")
-        pprint.pprint(cmd_history)  # find how to save a log of this later
+        write_cmds_to_txt(cmd_history)
+        pprint.pprint(cmd_history)
         print('\n')
         robot.power_off()
         print("Goodbye!")
@@ -123,8 +122,110 @@ def execute_single_cmd(robot, user_cmd):
         tup[1](tup[2], tup[3])
 
 
-def exectute_cmds(robot, cmd_dict):
-    pass
+def execute_cmds(robot, cmds):
+    """Reads a series of commands from a specially formatted list or text
+    file and executes them in order. If using a list, format in the
+    following fashion
+
+    cmd_list = [{'str': <command n>, 'time': <time to execute command n>}]
+
+    If using a text file have the first column indicate the commands
+    and the second command indincate the time to execute the commands
+
+    w 1.5
+    a 7
+    s 2
+    d 4
+
+    The function ends the series of commands with a brake() to prevent
+    robot from rolling away.
+
+    Args:
+    robot (Carm): Carm instance
+    cmds (list or str): list containing command data or filename of text file
+    containing command data
+
+    Returns:
+    None
+
+    """
+    def ex(cmd_str, robot=robot):
+        execute_single_cmd(robot, cmd_str)
+
+    if type(cmds) == str:
+        try:
+            cmds = read_cmds_from_txt(cmds)
+        except FileNotFoundError:
+            print("File not found")
+
+    for cmd in cmds:
+        ex(cmd['str'])
+        time.sleep(cmd['time'])
+    ex(' ')
+
+
+def read_cmds_from_txt(filename):
+    """Takes in a text file and returns a command list for execution by a
+    Carm object. Text must be formatted with the first column as the
+    command string and the second column as the duration of execution
+    for said command. Example formatting (do not include # signs or
+    anything to the right of them):
+
+    w 2.5  # drives forward for 2.5 seconds
+    a 3    # swing turns right for 3 seconds
+      1    # brakes for 1 second
+    1 2    # looksdown for 2 seconds
+
+    Args:
+    filename (str): input file containing command strings and times
+
+    Returns:
+    list: list of dicts formatted for execution
+
+    """
+    cmds = list()
+    with open(filename) as f:
+        for line in f:
+            if line[0] != ' ':
+                line = line.strip('\n').split()
+                cmds.append({'str': line[0],
+                             'time': int(line[1])})
+                print(line)
+            else:
+                line = line.strip('\n').split()
+                cmds.append({'str': ' ',
+                             'time': int(line[0])})
+                print(line)
+    return (cmds)
+
+
+def write_cmds_to_txt(cmds, filename='cmds.txt'):
+    """Takes in a list of command dicts and writes the values to a text
+    file in the ./cmds subdirectory. Cmds must be a list in the form:
+
+    [{'str': '<command str n>', 'time':<time to execute command n>}
+
+    Args:
+    cmds (list): list of dicts
+    filename (str): filename of output text file
+
+    Returns:
+    None
+
+    """
+    # TODO make sure the ./cmds dir exists
+    sub_dir = './cmds/'
+    if os.path.isfile(sub_dir + filename):
+        time_stamp = datetime.datetime.now().isoformat()[
+            :19].replace(":", '').replace('T', '-')
+        filename = filename.split('.')
+        filename[0] += '-' + time_stamp
+        filename = '.'.join(filename)
+
+    with open(sub_dir + filename, 'w') as f:
+        for cmd in cmds:
+            line = '{} {}\n'.format(cmd['str'], cmd['time'])
+            f.write(line)
 
 
 def line_following_mode(robot):
@@ -181,3 +282,14 @@ if __name__ == "__main__":
 
     manual_mode(robot)
     cleanup()
+
+    # Example Commands
+    cmds = [
+        {'str': 'n', 'time': 2},
+        {'str': 'p', 'time': 2},
+        {'str': 'g', 'time': 1},
+        {'str': 'o', 'time': 1},
+        {'str': '3', 'time': 1},
+        {'str': '1', 'time': 1},
+        {'str': '2', 'time': 1},
+    ]
