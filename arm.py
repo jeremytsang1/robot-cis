@@ -61,6 +61,17 @@ class Arm():
         self.gripper.sweep(self.gripper.config['min_pl'])
 
     def extend(self, dist_pl):
+        """Safe extension. Right arm servo extends/retracts but only if the
+        sum of dist_pl and the current pulse level doesn't go beyond
+        min/max pulse levels set in config.
+
+        Args:
+        dist_pl (int): positive or negative integer
+
+        Returns:
+        None
+
+        """
         if (self.right.config['min_pl'] <= (self.right.current_pl + dist_pl) <=
             self.right.config['max_pl']):
             self.right.sweep(self.right.current_pl + dist_pl)
