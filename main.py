@@ -4,7 +4,7 @@ import config
 import RPi.GPIO as GPIO
 import time
 import pprint
-from line_mode import line_following_mode
+# from line_mode import line_following_mode
 # import face
 
 def stop():
