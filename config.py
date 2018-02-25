@@ -20,13 +20,17 @@ config_gripper_servo = {
     'channel': 12,
     'pow_pl': 135,
     'min_pl': 135,
-    'max_pl': 300}
+    'max_pl': 300
+}
+
 config_right_servo = {  # use for forward and backward motion
     'name': 'right',
     'channel': 14,
     'pow_pl': 300,
     'min_pl': 300,  # provided l.current_pl = 450
-    'max_pl': 550}
+    'max_pl': 550
+}
+
 # Disable left and base servos till finish the rest of the Carm.
 # config_left_servo = {  # use for up and down motion
 #     'name': 'left',
@@ -48,26 +52,35 @@ config_arm = {
     'right': config_right_servo,
     # 'left': config_left_servo,
     # 'base': config_base_servo,
-    }
+}
 
 config_camera_servo = {
     'name': 'right',
     'channel': 15,
     'pow_pl': 415,
     'min_pl': 340,
-    'max_pl': 490}
+    'max_pl': 490
+}
 
-config_ir_left = {'name': 'left',
-                  'pin': 14}
-config_ir_right = {'name': 'right',
-                   'pin': 15}
+config_ir_left = {
+    'name': 'left',
+    'pin': 14
+}
+config_ir_right = {
+    'name': 'right',
+    'pin': 15
+}
 
-config_ultrasonic = {'trig': 23,
-                     'echo': 24}
+config_ultrasonic = {
+    'trig': 23,
+    'echo': 24
+}
 
-config_pi_camera = {'x_res': 320,
-                    'y_res': 240,
-                    'framerate': 32}
+config_pi_camera = {
+    'x_res': 320,
+    'y_res': 240,
+    'framerate': 32
+}
 
 config_carm = {
     'car': config_car,
@@ -76,5 +89,4 @@ config_carm = {
     'irl': config_ir_left,
     'irr': config_ir_right,
     'uls': config_ultrasonic,
-    }
-
+}
