@@ -156,4 +156,4 @@ if __name__ == "__main__":
 
     car = Car(config_car)
 
-    dcm.GPIO.cleanup()
+    GPIO.cleanup()
