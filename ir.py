@@ -88,3 +88,5 @@ if __name__ == "__main__":
 
     ir_left = IRSensor(config_ir_left)
     ir_right = IRSensor(config_ir_right)
+
+    GPIO.cleanup
