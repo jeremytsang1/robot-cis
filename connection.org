@@ -1,0 +1,49 @@
+- pins are BROADCOM or BOARD
+  - e.g.
+    - broadcom: jumping around (GPIO14, GPIO15, GPIO18, GND)
+    - physical: 1-40
+
+* PCA9685
+| connection | color  | BROADCOM pin | BOARD pin |
+|------------+--------+--------------+-----------|
+| GND        | BLACK  | GND          |         9 |
+| SCL        | GREEN  | I2C SDL      |         5 |
+| SCA        | YELLOW | I2C SDA      |         3 |
+| VCC        | RED    | 3.3V         |        17 |
+
+* L298N
+| connection | color  | BROADCOM pin | BOARD pin | description   |
+|------------+--------+--------------+-----------+---------------|
+| GND        | BLACK  |          GND |        34 |               |
+| IN1        | YELLOW |           12 |        32 | left back     |
+| IN2        | GREEN  |           16 |        36 | left forward  |
+| IN3        | YELLOW |            5 |        29 | right back    |
+| IN4        | GREEN  |            6 |        31 | right forward |
+
+* IRL
+- stage left
+- looking from the back to the front IRR is the one on the left
+| connection | color | BROADCOM pin | BOARD pin |
+|------------+-------+--------------+-----------|
+| VCC        | RED   | 3.3V         |         1 |
+| GND        | BLACK | GND          |         6 |
+| OUT        | BROWN | 14           |         8 |
+
+* IRR
+- stage right
+- looking from the back to the front IRR is the one on the right
+| connection | color | BROADCOM pin | BOARD pin |
+|------------+-------+--------------+-----------|
+| VCC        | RED   | 5V           |         4 |
+| GND        | BLACK | GND          |        20 |
+| OUT        | BROWN | 15           |        10 |
+
+
+* HC-SR04
+| connection | color  | BROADCOM pin | BOARD pin |
+|------------+--------+--------------+-----------|
+| GND        | BLACK  | GND          |        14 |
+| ECHO       | PURPLE | 24           |        18 |
+| TRIG       | BLUE   | 23           |        16 |
+| VCC        | RED    | 5V           |         2 |
+
